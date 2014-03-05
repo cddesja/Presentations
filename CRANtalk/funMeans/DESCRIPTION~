@@ -1,0 +1,9 @@
+Package: funMeans
+Type: Package
+Title: Functions of Means
+Version: 0.0.1
+Date: 2014-03-05
+Author: Christopher David Desjardins
+Maintainer: cddesjardins@gmail.com
+Description: This package will report different means.
+License: GPL (>= 2)

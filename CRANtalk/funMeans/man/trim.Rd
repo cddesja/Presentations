@@ -1,0 +1,45 @@
+\name{trim}
+\alias{trim}
+\alias{summary.funMeans}
+
+\title{
+Trimmed Mean
+}
+\description{
+This function calculates the trimmed mean
+}
+
+\usage{
+trim(x, tr = 0.1)
+}
+
+\arguments{
+  \item{x}{A vector of values for calculating the mean}
+  \item{tr}{The value to use for trimming. By default this is 0.1}
+}
+
+
+\value{
+An object of class \code{funMeans} is returned. Running summary for this object returns information about the trimmed mean, the mean, and the sample size. 
+}
+
+\references{
+Desjardins, C. 2014. Wonderful world of central tendencies.
+}
+
+\author{
+Christopher David Desjardins
+}
+
+\seealso{
+See Also as \code{\link{win}}, ~~~
+}
+
+\examples{
+\dontrun{
+FunMeans1 <- trim(trim.data)
+summary(FunMeans1)
+}
+}
+
+\keyword{methods}

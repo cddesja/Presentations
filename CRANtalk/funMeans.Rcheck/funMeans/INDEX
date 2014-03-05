@@ -1,0 +1,4 @@
+funMeans-package        Functions of Means
+trim                    Trimmed Mean
+trim.data               Data for Differet Mean Functions
+win                     Winsorized Mean

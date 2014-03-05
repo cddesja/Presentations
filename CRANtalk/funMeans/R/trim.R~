@@ -1,0 +1,19 @@
+trim <-
+function(x,tr=.1){
+    y=sort(x)
+    n=length(x)
+    qlow=quantile(y,probs=tr,na.rm=T)
+    qhigh=quantile(y,probs=1-tr,na.rm=T)
+    y=subset(y,y > qlow & y < qhigh)
+    trim=mean(y)
+    class(trim) <- "funMeans"
+    return(trim)
+}
+
+summary.funMeans <- function(object, ...){
+      cat("\n Trimmed Mean\n")
+      print(object$trim.mean)
+      cat("\n Trimming Value - ", object$trim.value)
+      cat("\n Untrimmed Mean - ", object$untrimmed)
+      cat("\n Sample size - ", object$samp.size,"\n")
+  }

@@ -1,0 +1,4 @@
+\beamer@endinputifotherversion {3.24pt}
+\beamer@sectionintoc {1}{Brief introduction to programming in R}{3}{0}{1}
+\beamer@sectionintoc {2}{Developing an R package}{7}{0}{2}
+\beamer@sectionintoc {3}{Building the package}{18}{0}{3}
