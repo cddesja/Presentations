@@ -1,0 +1,508 @@
+\documentclass[xcolor=svgnames]{beamer} 
+%\usecolortheme[named=maroon]{structure} 
+%\usetheme[height=7mm]{Madrid} 
+\usepackage{hyperref}
+%\beamertemplatenavigationsymbolsempty
+\usepackage{pdfpages}
+\usepackage{Sweave}
+\hypersetup{
+colorlinks=true}
+
+% \usepackage{beamerthemesplit} // Activate for custom appearance
+
+\title{CRAN workshop}
+\author{Christopher David Desjardins
+\url{http://www.github.com/cddesjardins}}
+\date{6 March 2014}
+
+\begin{document}
+\frame{\titlepage}
+  
+\frame{
+\frametitle{Overview}
+\tableofcontents}
+
+\section{Brief introduction to programming in R}
+
+
+\begin{frame}
+  \frametitle{Objects in R (based on Wickham, 2011)}
+  \begin{itemize}
+  \item The R language has three objects systems, S3, S4, and R5.
+  \item S3
+    \begin{itemize}
+      \item Not a formal class
+      \item S3 has been around since R started.
+      \item S3 is really just a naming convention and a bunch of methods.
+        \item Very easy to use and most common in R (only OO in base and stats)
+   \end{itemize}
+  \item S4
+    \begin{itemize}
+      \item Similar to S3 but newer and formal. Rather difficult.
+        \item \texttt{setClass()}, \texttt{setGeneric()}, and \texttt{setMethod()} define classes, generic functions, and methods. Include slots @ (for example, see lmerMod)
+    \end{itemize}
+    \item R5
+      \begin{itemize}
+        \item Suited for simulations that model complex states and GUI. Components that need mutable states
+      \end{itemize}
+      \item Can use \texttt{pryr::otype(foo)} to determine object type
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{S3 objects}
+  \scriptsize{
+  \begin{itemize}
+  \item Methods for objects of a particular class are called by \texttt{method.class()}
+  \item Methods include \texttt{summary()}, \texttt{anova()}, \texttt{print()}, etc.
+  \item Classes include \texttt{lm}, \texttt{glm}, \texttt{factor}, and so on.
+  \end{itemize}
+  }
+\tiny{
+\begin{Schunk}
+\begin{Sinput}
+> library(profileR)
+> ls(package:profileR)
+\end{Sinput}
+\begin{Soutput}
+ [1] "cp"          "EEGS"        "IPMMc"       "leisure"     "pams"       
+ [6] "pbg"         "pc"          "pr"          "profileplot" "PS"         
+\end{Soutput}
+\begin{Sinput}
+> methods(class = "critpat")
+\end{Sinput}
+\begin{Soutput}
+[1] anova.critpat*   plot.critpat*    print.critpat*   summary.critpat*
+
+   Non-visible functions are asterisked
+\end{Soutput}
+\begin{Sinput}
+> methods(summary)
+\end{Sinput}
+\begin{Soutput}
+ [1] summary.aov             summary.aovlist         summary.aspell*        
+ [4] summary.connection      summary.critpat*        summary.data.frame     
+ [7] summary.Date            summary.default         summary.ecdf*          
+[10] summary.factor          summary.funMeans        summary.ggplot*        
+[13] summary.glm             summary.infl            summary.lm             
+[16] summary.loess*          summary.loglm*          summary.manova         
+[19] summary.matrix          summary.mlm             summary.negbin*        
+[22] summary.nls*            summary.packageStatus*  summary.PDF_Dictionary*
+[25] summary.PDF_Stream*     summary.polr*           summary.POSIXct        
+[28] summary.POSIXlt         summary.ppr*            summary.prcomp*        
+[31] summary.princomp*       summary.proc_time       summary.profg*         
+[34] summary.rlm*            summary.srcfile         summary.srcref         
+[37] summary.stepfun         summary.stl*            summary.table          
+[40] summary.tukeysmooth*   
+
+   Non-visible functions are asterisked
+\end{Soutput}
+\end{Schunk}
+}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{More with S3}
+\begin{tiny}
+\begin{Schunk}
+\begin{Sinput}
+> x <- rbinom(n = 1000, size = 1, prob = .4)
+> y <- rnorm(n= 1000,mean=1.4 + .3*x)
+> mod1 <- lm(y~x)
+> class(mod1)
+\end{Sinput}
+\begin{Soutput}
+[1] "lm"
+\end{Soutput}
+\begin{Sinput}
+> otype(mod1)
+\end{Sinput}
+\begin{Soutput}
+[1] "S3"
+\end{Soutput}
+\begin{Sinput}
+> # Can call directly, not advised!
+> print.lm(mod1)
+\end{Sinput}
+\begin{Soutput}
+Call:
+lm(formula = y ~ x)
+
+Coefficients:
+(Intercept)            x  
+     1.3428       0.4555  
+\end{Soutput}
+\begin{Sinput}
+> # Need for Sweave
+> cat(try(summary.factor(mod1)))
+\end{Sinput}
+\begin{Soutput}
+Error in table(object) : all arguments must have the same length
+\end{Soutput}
+\begin{Sinput}
+> stats:::extractAIC.lm(mod1)
+\end{Sinput}
+\begin{Soutput}
+[1]  2.00000 41.14482
+\end{Soutput}
+\end{Schunk}
+\end{tiny}
+\end{frame}
+
+\begin{frame}
+  \frametitle{S4 objects}
+  \begin{itemize}
+    \item These are much more complicated
+      \item Best to learn S3 first
+        \item To learn about S4: \url{http://adv-r.had.co.nz/S4.html}
+          \item A great book for learning about the nuts and bolts of R is: \url{adv-r.had.co.nz/}
+            \item \texttt{lme4} and \texttt{Matrix} are S4 packages
+      
+  \end{itemize}
+\end{frame}
+
+\section{Developing an R package}
+
+\begin{frame}
+\frametitle{Prepping for an R package}
+\begin{itemize}
+  \item Pull a package off CRAN that you're interested
+    \begin{itemize}
+      \item Suggestion: Package by Doug Bates, Hadley Wickham, or John Fox
+    \end{itemize}
+  \item Extract the tarball
+  \item Examine the contents
+  \item Use package.skeleton() when you have all the data and R functions you want to include in a package in a clean R environment
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{What is in an R package?}
+\begin{itemize}
+\item DESCRIPTION - description of the package, author(s), and license.
+\item A \texttt{man$/$} subdirectory of documentation for each R function.
+\item An  \texttt{R$/$} subdirectory of the actual R code.
+\item A \texttt{data$/$} subdirectory of datasets.
+\item Maybe a \texttt{src$/$} containing C, C++, or Fortran code.
+\item \texttt{tests$/$} for validation tests.
+\item \texttt{exec$/$} for other executables (eg Perl or Java).
+\item \texttt{inst$/$} for miscellaneous other stuff.
+\item \texttt{configure} script
+\item CHANGELOG - description of the changes
+\item NEWS - information about changes in the package
+\item NAMESPACE -  What variables in the package should be exported to make them available to package users, and which variables should be imported from other packages
+\item A Vignette?
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{package.skeleton()}
+\begin{Schunk}
+\begin{Sinput}
+> trim <- function(x,tr=.1){
++     y=sort(x)
++     n=length(x)
++     qlow=quantile(y,probs=tr,na.rm=T)
++     qhigh=quantile(y,probs=1-tr,na.rm=T)
++     y=subset(y,y > qlow & y < qhigh)
++     trim=mean(y)
++     output <- list(samp.size = n, untrimmed = mean(x),
++                    adj.mean = trim, trim.value = tr)
++     class(output) <- "funMeans"
++     return(output)
++ } 
+> set.seed(2351234)
+> trim.data <- rnorm(n = 10, mean = 5, sd = 25)                                   
+> # Create a package called funMeans
+> #package.skeleton(name = "funMeans")  
+\end{Sinput}
+\end{Schunk}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Read-and-delete-me}
+  \begin{verbatim}
+* Edit the help file skeletons in 'man', possibly
+ combining help files for multiple functions.
+* Edit the exports in 'NAMESPACE', and add necessary
+ imports.
+* Put any C/C++/Fortran code in 'src'.
+* If you have compiled code, add a useDynLib() directive
+ to 'NAMESPACE'.
+* Run R CMD build to build the package tarball.
+* Run R CMD check to check the package tarball.
+
+Read "Writing R Extensions" for more information.
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{DESCRIPTION}
+\begin{verbatim}
+Package: funMeans
+Type: Package
+Title: What the package does (short line)
+Version: 1.0
+Date: 2014-03-05
+Author: Who wrote it
+Maintainer: Who to complain to <yourfault@somewhere.net>
+Description: More about what it does (maybe more than one
+line)
+License: What license is it under?
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{DESCRIPTION}
+\begin{footnotesize}
+\begin{verbatim}
+Package: funMeans
+Type: Package
+Title: Functions of Means
+Version: 0.0.1
+Date: 2014-03-05
+Author: Christopher David Desjardins <cddesjardins@gmail.com>
+Maintainer: Christopher David Desjardins <cddesjardins@gmail.com>
+Description: This package will report different means.
+License: GPL (>= 2)
+\end{verbatim}
+\end{footnotesize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Licensing your package}
+  \begin{itemize}
+  \item There are several licenses to choose from
+    \begin{itemize}
+    \item GNU GPL
+      \begin{itemize}
+      \item Free to share, free to modify, free to copy, free to use, free to study
+      \item Freest license ... with a catch!
+      \item All derivative work must be licensed under the GPL - copyleft
+      \item You can sell GPL software provided you provide the sources upon request or package them with the binary. Then that person could freely distribute the source code ...  
+      \end{itemize}
+\item MIT
+  \begin{itemize}
+  \item Permits reuse of your code within proprietary software provided MIT license is included
+  \end{itemize}
+
+    \end{itemize}
+
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{/R subdirectory}
+  \begin{itemize}
+  \item Can safely delete packageName-internal.R
+  \item trim.R is the script that contains the actual R code
+  \item Let's create a summary method for class \texttt{funcMeans}! 
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{summary.funMeans}
+\begin{Schunk}
+\begin{Sinput}
+>   summary.funMeans <- function(object, ...){
++       cat("\n Adjusted Mean\n")
++       print(object$adj.mean)
++       cat("\n Trimming Value - ", object$trim.value)
++       cat("\n Untrimmed Mean - ", object$untrimmed)
++       cat("\n Sample size - ", object$samp.size,"\n")
++   }
+> funMean1 <- trim(trim.data)
+> summary(funMean1)
+\end{Sinput}
+\begin{Soutput}
+ Adjusted Mean
+[1] 10.86191
+
+ Trimming Value -  0.1
+ Untrimmed Mean -  7.757717
+ Sample size -  10 
+\end{Soutput}
+\end{Schunk}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{One more mean function}
+\begin{scriptsize}
+\begin{Schunk}
+\begin{Sinput}
+> win<-function(x,tr=.2){
++    y<-sort(x)
++    n<-length(x)
++    ibot<-floor(tr*n)+1
++    itop<-length(x)-ibot+1
++    xbot<-y[ibot]
++    xtop<-y[itop]
++    y<-ifelse(y<=xbot,xbot,y)
++    y<-ifelse(y>=xtop,xtop,y)
++    win<-mean(y)
++    output <- list(samp.size = n, untrimmed = mean(x),
++                   adj.mean = win, trim.value = tr)
++     class(output) <- "funMeans"
++     return(output)
++ }
+> funMean2 <- win(trim.data)
+> summary(funMean2)
+\end{Sinput}
+\begin{Soutput}
+ Adjusted Mean
+[1] 10.53635
+
+ Trimming Value -  0.2
+ Untrimmed Mean -  7.757717
+ Sample size -  10 
+\end{Soutput}
+\end{Schunk}
+\end{scriptsize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{man/ subdirectory}
+  \begin{itemize}
+  \item This contains all the manpages
+  \item This is time consuming work ... 
+    \item Apparently \texttt{roxygen2} can help (untested)
+      \item Syntax similar to \LaTeX
+  \end{itemize}
+  
+\end{frame}
+
+\begin{frame}
+  \frametitle{Vignette}
+  \begin{itemize}
+  \item Why you should create a vignette.
+    \begin{itemize}
+    \item It demonstrates how to use your package
+    \item It allows you to clearly articulate your thinking
+    \item It can develop into an easy publication for JSS or other similar outlets
+
+    \end{itemize}
+  \item You can include either an .Rnw, .tex, or a .pdf document
+  \item These should be placed in the vignettes/ subdirectory
+        \item Check out \texttt{vignette()}
+  \end{itemize}
+\end{frame}
+
+\section{Building the package}
+
+\begin{frame}[fragile]
+\frametitle{Building the tarball}
+   \begin{itemize}
+  \item There are various ways to do this
+     \begin{itemize}
+     \item Rstudio - Use Build \& Reload button
+     \item Terminal - Preferred method (because I use Emacs)
+     \end{itemize}
+  \end{itemize}
+
+  \begin{scriptsize}
+  \begin{verbatim}
+chris@debian:~/github/$ R CMD build funMeans/
+* checking for file 'funMeans/DESCRIPTION' ... OK
+* preparing 'funMeans':
+* checking DESCRIPTION meta-information ... OK
+* checking for LF line-endings in source and make files
+* checking for empty or unneeded directories
+* looking to see if a 'data/datalist' file should be added
+* building 'funMeans_0.0.1.tar.gz'
+
+ \end{verbatim}
+\end{scriptsize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Checking if it's OK for CRAN}  
+\begin{itemize}
+  \item Again you can do this from Rstudio or a Terminal
+\end{itemize}
+    \begin{scriptsize}
+\begin{verbatim}
+  chris@debian:~/github/$ R CMD check --as-cran funMeans_0.0.1.tar.gz
+* using log directory '/home/chris/github/funMeans.Rcheck'
+* using R version 3.0.2 (2013-09-25)
+* using platform: x86_64-pc-linux-gnu (64-bit)
+ ...
+* checking CRAN incoming feasibility ... NOTE
+Maintainer: 'Christopher David Desjardins <cddesjardins@gmail.com>'
+New submission
+...
+* checking PDF version of manual ... OK
+
+NOTE: There was 1 note.
+\end{verbatim}
+\end{scriptsize}
+\begin{itemize}
+  \item This is the only Note you can ignore!
+    \item Any warnings and notes must be dealt with before you submit to CRAN.
+      \item Most messages are insightful!
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Submitting to CRAN}
+  \begin{itemize}
+  \item To submit to CRAN follow the instructions here: \url{http://cran.r-project.org/submit.html}
+  \item Send an email to CRAN@R-project.org from the maintainer address listed in the package using the subject line 'CRAN submission PACKAGE VERSION', where PACKAGE and VERSION are the package name and version, respectively. 
+  \item For a new submission, confirm in your email that you have read and agree to CRANs policies.
+    \item Usually in less than 48 hours your package will be on CRAN and binaries will be built for Windows and Macs.
+  \end{itemize}
+\end{frame}
+
+\section{Github and prompting your package}
+
+\begin{frame}[fragile]
+  \frametitle{Github}
+  \begin{itemize}
+  \item If you are releasing your software with an open-source license (you are right), then consider developing the package on Github.
+    \item This code is dumped into a funMeans repository
+      \item \url{https://github.com/cddesjardins/funMeans}
+        \begin{itemize}
+        \item \texttt{git clone https://github.com/cddesjardins/funMeans.git}
+        \end{itemize}
+  \end{itemize}    
+ 
+\begin{Schunk}
+\begin{Sinput}
+> library(devtools)
+> install_github(username="cddesjardins",repo="funMeans")
+\end{Sinput}
+\end{Schunk}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Github}
+  \begin{itemize}
+    \item Great way to share you code
+    \item Git is branching and merging of code is good (supposedly)
+      \item Very quick and easy to get up and running
+      \item Can add other languages too.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{How will someone use your code?}
+  \begin{itemize}
+  \item Write and publish your vignette
+  \item Try and get your package included in a CRAN Task View
+  \item Create a website for it (Github can do this)
+  \item Promote it in your signature in your email
+  \item Contribute on Stack Overflow or the R-mailing list 
+  \end{itemize}
+
+  \end{frame}
+
+\begin{frame}
+\frametitle{R Users Group}
+\begin{itemize}
+\item Interested in more R talk?
+\item Contact annahelgajons AT gmail DOT com to be added to the mailing list. 
+\end{itemize}
+\end{frame}
+  
+\end{document}
