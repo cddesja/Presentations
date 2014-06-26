@@ -77,7 +77,9 @@ library(Rcmdr)
 # To install a library in R use the install.package() function
 # Some libraries of interest here.
 
+install.packages("irtoys")  # IRT models
 install.packages("ltm")  # latent trait models, 1, 2, 3-PL models, GR, GPCM
+library(nlme)  # HLM models
 install.packages("lme4")  # HLM aka mixed effects modeling, can do Rasch modeling
 install.packages("lavaan")  # CFA, SEM simple output/model syntax to MPlus
 install.packages("sem")  # Another SEM program
@@ -96,6 +98,10 @@ library(foreign)  # This is library needs to be loaded to read SPSS data
 # List the functions in a particular package
 lsf.str("package:foreign")
 
+# To see vignettes
+vignette()
+vignette("Guide")
+
 # To find out information about a function:
 ?read.spss  # In spite of the cavaet, I have had no issues with this function
 
@@ -106,7 +112,7 @@ lsf.str("package:foreign")
 data()
 
 # Which data sets belong to ltm, irtoys, and lme4?
-data(package=c("lme4","ltm","irtoys"))
+data(package = c("lme4","ltm","irtoys"))
 
 # Check what directory we're working from and set it
 getwd()
@@ -132,6 +138,9 @@ head(precol)
 # and the last few
 tail(precol)
 
+# view all data
+precol
+
 # If you want to see a specific observation, say #20, and you want to see responses from variables 2 through 3
 precol[20,2:3]
 
@@ -148,7 +157,8 @@ attr(precol,"variable.labels")
 names(precol)
 
 # To write the data to a text file in your working directory
-write.table(precol,file = "precol.txt")
+write.table(precol,file = "precol.txt", row.names = FALSE)
+write.csv(precol, file = "precol.csv")
 
 # To read it back in
 read.table(file="precol.txt")
@@ -238,6 +248,8 @@ g0 + geom_point() + theme_bw()  # let's give it a black and white theme
 g0 + geom_point(col = "orange") + theme_bw()  # bw theme and orange points
 (g1 <- g0 + geom_point(col = "orange", shape = 2) +
   theme_bw())  # bw theme and orange triangles, () echo
+(g1 <- g0 + geom_point(aes(colour = GENDER), shape = 2) +
+   theme_bw()) 
 
 # Add a best fit
 (g2 <- g1 + stat_smooth(aes(color = GENDER),method = "lm", formula = y ~ x))
@@ -261,13 +273,17 @@ ggplot(aes(y = HSPR, x = GENDER), data = precol) +
 ggplot(data = precol, aes(HSPR)) + geom_histogram(fill="white", color = "red") +
   xlab("High School Percentile Rank") + ylab("Frequency")
 
+ggplot(data = precol, aes(HSPR)) + geom_histogram(fill="white", color = "red") +
+  xlab("High School Percentile Rank") + ylab("Frequency") + facet_grid(.~GENDER)
+
+ggplot(data = precol, aes(HSPR)) + geom_histogram(aes(fill=ETHDESCR), color = "red") +
+  xlab("High School Percentile Rank") + ylab("Frequency") + facet_grid(GENDER~ETHDESCR) 
+
 # Change data type, remember id shouldn't really be numeric
 precol$id <- as.factor(precol$id)
 
 # Section should also be a factor
 precol$SECTION <- as.factor(precol$SECTION)
-
-
 
 # Subset only the continuous variables
 numer <- NULL
@@ -275,9 +291,11 @@ for(i in 1:ncol(precol)){
   numer[i] <- is.numeric(precol[,i])
 }
 cont.var <- precol[,numer]
+head(cont.var)
 
 # Scatterplot matrix
 pairs(cont.var)
+pairs.panels(cont.var)
 
 # Correlation matrix
 cor(cont.var)
@@ -298,6 +316,14 @@ t.test(ACT_MATH~GENDER, data = precol)
 m0 <- lm(ACT_MATH ~ GENDER, data = precol)
 summary(m0)
 
+precol$white <- ifelse(precol$ETHDESCR == "White     ", "White","Non-White")
+table(precol$white)
+precol$red.ethnic <- ifelse(precol$ETHDESCR == "White     ", "White",
+                            ifelse(precol$ETHDESCR ==  "Black     ", "Black", "Other"))
+
+red.ethnic <- ifelse(precol$ETHDESCR == "White     ", "White",
+                     ifelse(precol$ETHDESCR ==  "Black     ", "Black", "Other"))
+
 # Which is of course also a one-factor ANOVA
 anova(m0)
 
@@ -316,7 +342,7 @@ m0$residuals
 
 # Or through R commands
 coef(m0)
-residuals(m0)
+print(residuals(m0), digits = 2)
 
 # You can get a lot of diagnostic information from plotting model
 plot(m0)
