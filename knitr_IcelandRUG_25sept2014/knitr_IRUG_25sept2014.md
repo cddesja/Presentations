@@ -3,7 +3,9 @@ Christopher David Desjardins
 26 September 2014  
 
 ## What is reproducible research?
- 
+
+
+
 
  
 "The final product of research is not only the paper itself, but also the full __computation environment__ used to produce the results in the paper such as the __code__ and __data__ necessary for reproduction of the results and building upon the research." (Xie, 2014).
@@ -24,7 +26,7 @@ Obviously, this is not always possible!
 
 Which one should you use, see [Yihue Xie's post](http://yihui.name/en/2013/10/markdown-or-latex/). 
 
-- [Rstudio](http://www.rstudio.com) (_recommended_)
+- [Rstudio](http://www.rstudio.com) (_recommended_, if you're not wedded to an IDE)
 
 The developers of Rstudio are often the first to integrate the latest and greatest from `R`.
 
@@ -39,11 +41,11 @@ How can `knitr` help us achieve reproducibility?
 
 1. We __never__ need to copy and paste results into reports.
 2. If the data changes, our models, figures, and tables are __automatically updated__.
-3. From a `knitr` document we can automatically generate the output using `knit()` or extract the `R` code from an input document using `purl()`.
-5. Generate a document for an `R` script with `stitch()`.
+3. From a `knitr` document we can automatically generate a report using `knit()` or extract the `R` code from it using `purl()`.
+5. Generate a document from an `R` script with `stitch()`.
 4. It is much more feature rich than Sweave.
 
-## Markdown demonstration
+## Markdown and Shiny demonstration
 
 
 ```r
@@ -52,9 +54,11 @@ if(!require("shiny"))
 demo("notebook", package = "knitr")
 ```
 
-## Input syntax
+## Chunks
 
 Input is evaluated in chunks. Either __code chunks__
+
+For `knitr`, chunks are what we write `R` code in. 
 
     ```{r}
     <insert R code for Markdown>
@@ -64,19 +68,12 @@ Input is evaluated in chunks. Either __code chunks__
     <insert R code for LaTeX>
     @
 
-Or as __inline R code__
-
-```
-`r <insert R for Markdown> `
-
-\Sexpr{ <insert R code for LaTeX> }
-```
 
 
-## Chunks
+## More on Chunks
 
-
-Chunks have a plethora of options. These options include: setting labels, whether the input/output should be hidden, whether all/some of the code should be evaluated, how to handle messages, etc. 
+* Chunks have a plethora of options available by default 
+* You can also 'roll your own' chunk options provided they are valid `R` code.
 
 
 ```r
@@ -95,11 +92,73 @@ opts_chunk$get("engine")
 ## [1] "R"
 ```
 
-## Tables
+* `knitr` works with other languagues too (python, ruby, etc) 
 
+## `knitr` Output  
+* `knitr` output may be __inline__
+
+```
+`r <insert R code for Markdown>`
+
+\Sexpr{<insert R code for LaTeX>}
+```
+* Chunk option can be text, tabular, and graphical
+
+## Chunk Output
+* What will this generate?
+    
+    ```{r, cool_chunk, eval = -1, echo = FALSE, message=FALSE, fig.align ='center'}
+    
+    coef(lm(dist ~ speed, data = cars))[1]
+    
+    ggplot(aes(x=speed, y = dist), data = cars) + geom_point(col = "#56B4E9") + geom_smooth(col = "999999") + theme_bw() + ylab("Driving Speed") + xlab("Distance to Stop")
+
+``````
+
+## Answer
+<img src="./knitr_IRUG_25sept2014_files/figure-html/cool_chunk.png" title="" alt="" style="display: block; margin: auto;" />
+
+
+
+## Helpful Chunk Output Options
+* `eval = TRUE` : Evaluate all or part of the current chunk
+* `echo = TRUE` : Show all or part of the source code
+* `results = 'asis'` : Writes raw output from R to the output document without markup. Helpful for creating tables with `xtable`. `markup` is the default.
+* `include = TRUE` : Code chunk will be included in output. If you don't want a chunk in the output but _still_ evaluated set this to `FALSE`
+
+## Perhaps Helpful?
+
+```r
+foo <- 2
+bar <- foo
+```
+
+
+
+
+```
+## they are the same
+```
+
+
+````
+```{r}
+foo <- 2
+bar <- foo
+```
+```{r eval = foo < bar, echo = FALSE}
+cat("foo is greater than bar")
+```
+```{r eval = foo == bar, echo = FALSE}
+cat("they are the same")
+```
+````
+
+
+## Tables
 Tables are easily handled with `xtable`. Make sure to specify `results = "asis"` to render the table. 
 <!-- html table generated in R 3.1.1 by xtable 1.7-3 package -->
-<!-- Fri Sep 19 19:04:58 2014 -->
+<!-- Mon Sep 22 19:32:13 2014 -->
 <TABLE border=1>
 <TR> <TH>  </TH> <TH> Estimate </TH> <TH> Std. Error </TH> <TH> t value </TH> <TH> Pr(&gt;|t|) </TH>  </TR>
   <TR> <TD align="right"> (Intercept) </TD> <TD align="right"> -17.5791 </TD> <TD align="right"> 6.7584 </TD> <TD align="right"> -2.60 </TD> <TD align="right"> 0.0123 </TD> </TR>
@@ -107,9 +166,9 @@ Tables are easily handled with `xtable`. Make sure to specify `results = "asis"`
    </TABLE>
 <p>
 </p>
-Finer control of tables with LaTeX. Finally, we insert our fitted model using inline code:
+Finer control of tables with LaTeX. Finally, we can insert our fitted model using inline code:
 
-$\hat{dist_i} = -17.5791 + 3.9324 speed_i$
+$\hat{dist_i} = -17.58 + 3.93 speed_i$
 
 ## Code used
     ```{r, results = "asis", echo=FALSE}
@@ -125,16 +184,184 @@ For the inline code:
 $\hat{dist_i} = `r coef_tab[1,1]` + `r coef_tab[2,1] ` speed_i$
 ```
 
-
 ## Using an ioslides table
 
 -------------------------------------------------------------
 Coefficients     Estimate     Standard    t-value     Pr(>|t|)
                               Error   
 -------------- ------------ ----------- ----------- ------------
-(Intercept)    -17.5791       6.7584       -2.6011       0.0123  
+(Intercept)    -17.58        6.76        -2.6       0.01  
 
-speed            3.9324       0.4155       9.464       1.4898 &times; 10<sup>-12</sup>  
+speed              3.93      0.42         9.46       1.49\times 10^{-12}  
 -------------------------------------------------------------
 
+## Animated figures
+* Can insert animated figures
+<!--html_preserve--><div id="plot_id857087164-container" class="ggvis-output-container">
+<div id="plot_id857087164" class="ggvis-output"></div>
+<div class="plot-gear-icon">
+<nav class="ggvis-control">
+<a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
+<ul class="ggvis-dropdown">
+<li>
+Renderer: 
+<a id="plot_id857087164_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id857087164" data-renderer="svg">SVG</a>
+ | 
+<a id="plot_id857087164_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id857087164" data-renderer="canvas">Canvas</a>
+</li>
+<li>
+<a id="plot_id857087164_download" class="ggvis-download" data-plot-id="plot_id857087164">Download</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<script type="text/javascript">
+var plot_id857087164_spec = {
+	"data" : [
+		{
+			"name" : "mtcars0",
+			"format" : {
+				"type" : "csv",
+				"parse" : {
+					"wt" : "number",
+					"mpg" : "number"
+				}
+			},
+			"values" : "\"wt\",\"mpg\"\n2.62,21\n2.875,21\n2.32,22.8\n3.215,21.4\n3.44,18.7\n3.46,18.1\n3.57,14.3\n3.19,24.4\n3.15,22.8\n3.44,19.2\n3.44,17.8\n4.07,16.4\n3.73,17.3\n3.78,15.2\n5.25,10.4\n5.424,10.4\n5.345,14.7\n2.2,32.4\n1.615,30.4\n1.835,33.9\n2.465,21.5\n3.52,15.5\n3.435,15.2\n3.84,13.3\n3.845,19.2\n1.935,27.3\n2.14,26\n1.513,30.4\n3.17,15.8\n2.77,19.7\n3.57,15\n2.78,21.4"
+		},
+		{
+			"name" : "scale/x",
+			"format" : {
+				"type" : "csv",
+				"parse" : {
+					"domain" : "number"
+				}
+			},
+			"values" : "\"domain\"\n1.31745\n5.61955"
+		},
+		{
+			"name" : "scale/y",
+			"format" : {
+				"type" : "csv",
+				"parse" : {
+					"domain" : "number"
+				}
+			},
+			"values" : "\"domain\"\n9.225\n35.075"
+		}
+	],
+	"scales" : [
+		{
+			"name" : "x",
+			"domain" : {
+				"data" : "scale/x",
+				"field" : "data.domain"
+			},
+			"zero" : false,
+			"nice" : false,
+			"clamp" : false,
+			"range" : "width"
+		},
+		{
+			"name" : "y",
+			"domain" : {
+				"data" : "scale/y",
+				"field" : "data.domain"
+			},
+			"zero" : false,
+			"nice" : false,
+			"clamp" : false,
+			"range" : "height"
+		}
+	],
+	"marks" : [
+		{
+			"type" : "symbol",
+			"properties" : {
+				"update" : {
+					"fill" : {
+						"value" : "#000000"
+					},
+					"size" : {
+						"value" : 300
+					},
+					"opacity" : {
+						"value" : 0.4
+					},
+					"x" : {
+						"scale" : "x",
+						"field" : "data.wt"
+					},
+					"y" : {
+						"scale" : "y",
+						"field" : "data.mpg"
+					}
+				},
+				"ggvis" : {
+					"data" : {
+						"value" : "mtcars0"
+					}
+				}
+			},
+			"from" : {
+				"data" : "mtcars0"
+			}
+		}
+	],
+	"width" : 288,
+	"height" : 288,
+	"legends" : [],
+	"axes" : [
+		{
+			"type" : "x",
+			"scale" : "x",
+			"orient" : "bottom",
+			"layer" : "back",
+			"grid" : true,
+			"title" : "wt"
+		},
+		{
+			"type" : "y",
+			"scale" : "y",
+			"orient" : "left",
+			"layer" : "back",
+			"grid" : true,
+			"title" : "mpg"
+		}
+	],
+	"padding" : null,
+	"ggvis_opts" : {
+		"keep_aspect" : false,
+		"resizable" : true,
+		"padding" : {},
+		"duration" : 250,
+		"renderer" : "svg",
+		"hover_duration" : 0,
+		"width" : 288,
+		"height" : 288
+	},
+	"handlers" : null
+};
+ggvis.getPlot("plot_id857087164").parseSpec(plot_id857087164_spec);
+</script><!--/html_preserve-->
+
+## Figures options
+* `dev = 'png'` : Sets the default graphical device. `tikz` has nicer font rendering for LaTeX 
+* `fig.width` and `fig.height` : Sets width and height of the device.
+* `fig.cap` and `fig.align` : Set a caption and alignment
+* Can set encoding (for Icelandic characters) and dingbat font (reduces the size of pdfs).
+* Can group together device options `dev.args = list(option1 = "foo", option2 = "bar")`
+
+## `cache = TRUE`
+* Caching is  helpful if you have a large document or `R` that takes a long time to certain chunks.
+* Caching comparing the MD5 hash of a cached chunk with MD5 hash of the same cache when `knit()` is re-run
+* You can set manual cache dependencies (i.e Chunk B depends on A) or this can be done automatically
+* Adding new data won't update a cache. One way to enable this is `file.info()` function in the chunk. For example,
+
+````
+```{r, foo_time = file.info('foo.csv')$mtime}
+foo <- read.csv("foo")
+...
+````
 
