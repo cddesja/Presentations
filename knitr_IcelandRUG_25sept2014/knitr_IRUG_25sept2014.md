@@ -18,32 +18,49 @@ Articles submitted for journals should include:
 
 Obviously, this is not always possible!
 
-## Tools for reproduciblity
+## Tools for reproducibilty
 
 - [R](http://r-project.org)
 - [knitr](http://yihui.name/knitr/)
-- [Markdown](http://daringfireball.net/projects/markdown/) or [LaTeX](http://www.latex-project.org/)
+- [Markdown](http://daringfireball.net/projects/markdown/) or [LaTeX](http://www.latex-project.org/) (_others exist (e.g. HTML) and you can create your own too_ )
 
 Which one should you use, see [Yihue Xie's post](http://yihui.name/en/2013/10/markdown-or-latex/). 
 
 - [Rstudio](http://www.rstudio.com) (_recommended_, if you're not wedded to an IDE)
 
-The developers of Rstudio are often the first to integrate the latest and greatest from `R`.
+The developers of Rstudio are often the first to integrate the latest and greatest from `R`. Else, [ESS](http://ess.r-project.org/) and [LyX](http://www.lyx.org/) are fully integrated with `knitr`. 
 
 ## Why `knitr`?
 
 
 ```r
-install.packages("knitr")
+install.packages("knitr", dependencies = TRUE)
 ```
 
 How can `knitr` help us achieve reproducibility?
 
 1. We __never__ need to copy and paste results into reports.
 2. If the data changes, our models, figures, and tables are __automatically updated__.
-3. From a `knitr` document we can automatically generate a report using `knit()` or extract the `R` code from it using `purl()`.
-5. Generate a document from an `R` script with `stitch()`.
+3. From a `knitr` document, automatically generate a report using `knit()` or extract the `R` code using `purl()`.
+5. Generate a report from an `R` script with `stitch()` and add text with `spin()`
 4. It is much more feature rich than Sweave.
+
+## `knitr` basics
+
+
+```
+Generates PDF
+knit('knit_toy/knit_toy.Rnw')
+
+Generates R script
+purl('purl_toy/purl_toy.Rnw')
+
+Generates PDF
+stitch('stitch_toy/stitch_toy.R')
+
+Generates Markdown
+spin('spin_toy/spin_toy.R')
+```
 
 ## Markdown and Shiny demonstration
 
@@ -68,6 +85,7 @@ For `knitr`, chunks are what we write `R` code in.
     <insert R code for LaTeX>
     @
 
+Throughout I use __Markdown__ syntax as I've created an [ioslide](https://code.google.com/p/io-2012-slides/) presentation using [RMarkdown](http://rmarkdown.rstudio.com/ioslides_presentation_format.html). However, the `chunk.begin` and `chunk.end` syntax can __always__ can be substituted. (In fact, you can roll your own syntax for these if you hate the above!)
 
 
 ## More on Chunks
@@ -107,17 +125,31 @@ opts_chunk$get("engine")
 ## Chunk Output
 * What will this generate?
     
-    ```{r, cool_chunk, eval = -1, echo = FALSE, message=FALSE, fig.align ='center'}
+    ```{r, cool_chunk, eval = -1, echo = c(1, 3), warning = FALSE, message = FALSE, fig.align ='center'}
     
     coef(lm(dist ~ speed, data = cars))[1]
     
     ggplot(aes(x=speed, y = dist), data = cars) + geom_point(col = "#56B4E9") + geom_smooth(col = "999999") + theme_bw() + ylab("Driving Speed") + xlab("Distance to Stop")
+    
+    dnorm(0, sd = -1)
 
 ``````
 
 ## Answer
+
+```r
+## coef(lm(dist ~ speed, data = cars))[1]
+```
+
 <img src="./knitr_IRUG_25sept2014_files/figure-html/cool_chunk.png" title="" alt="" style="display: block; margin: auto;" />
 
+```r
+dnorm(0, sd = -1)
+```
+
+```
+## [1] NaN
+```
 
 
 ## Helpful Chunk Output Options
@@ -154,11 +186,29 @@ cat("they are the same")
 ```
 ````
 
+## Local vs. global settings
+* Often we want to set options for our entire document rather than for every chunk
+* Set figure width equal to 6 with a center alignment and hide all `R` code
+
+__Local__ (_tedious_) 
+
+````
+```{r fig.width = 6, fig.align = 'center', echo = FALSE}
+plot(rnorm(10))
+```
+````
+__Global__ (_smart_)
+
+````
+```{r}
+opts_chunk$set(fig.width=6, fig.align = 'center', echo = FALSE))
+```
+````
 
 ## Tables
 Tables are easily handled with `xtable`. Make sure to specify `results = "asis"` to render the table. 
 <!-- html table generated in R 3.1.1 by xtable 1.7-3 package -->
-<!-- Mon Sep 22 19:32:13 2014 -->
+<!-- Tue Sep 23 10:50:52 2014 -->
 <TABLE border=1>
 <TR> <TH>  </TH> <TH> Estimate </TH> <TH> Std. Error </TH> <TH> t value </TH> <TH> Pr(&gt;|t|) </TH>  </TR>
   <TR> <TD align="right"> (Intercept) </TD> <TD align="right"> -17.5791 </TD> <TD align="right"> 6.7584 </TD> <TD align="right"> -2.60 </TD> <TD align="right"> 0.0123 </TD> </TR>
@@ -195,29 +245,28 @@ Coefficients     Estimate     Standard    t-value     Pr(>|t|)
 speed              3.93      0.42         9.46       1.49\times 10^{-12}  
 -------------------------------------------------------------
 
-## Animated figures
-* Can insert animated figures
-<!--html_preserve--><div id="plot_id857087164-container" class="ggvis-output-container">
-<div id="plot_id857087164" class="ggvis-output"></div>
+## Interactive figures (`ggvis`)
+<!--html_preserve--><div id="plot_id347547544-container" class="ggvis-output-container">
+<div id="plot_id347547544" class="ggvis-output"></div>
 <div class="plot-gear-icon">
 <nav class="ggvis-control">
 <a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
 <ul class="ggvis-dropdown">
 <li>
 Renderer: 
-<a id="plot_id857087164_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id857087164" data-renderer="svg">SVG</a>
+<a id="plot_id347547544_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id347547544" data-renderer="svg">SVG</a>
  | 
-<a id="plot_id857087164_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id857087164" data-renderer="canvas">Canvas</a>
+<a id="plot_id347547544_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id347547544" data-renderer="canvas">Canvas</a>
 </li>
 <li>
-<a id="plot_id857087164_download" class="ggvis-download" data-plot-id="plot_id857087164">Download</a>
+<a id="plot_id347547544_download" class="ggvis-download" data-plot-id="plot_id347547544">Download</a>
 </li>
 </ul>
 </nav>
 </div>
 </div>
 <script type="text/javascript">
-var plot_id857087164_spec = {
+var plot_id347547544_spec = {
 	"data" : [
 		{
 			"name" : "mtcars0",
@@ -343,20 +392,20 @@ var plot_id857087164_spec = {
 	},
 	"handlers" : null
 };
-ggvis.getPlot("plot_id857087164").parseSpec(plot_id857087164_spec);
+ggvis.getPlot("plot_id347547544").parseSpec(plot_id347547544_spec);
 </script><!--/html_preserve-->
 
 ## Figures options
 * `dev = 'png'` : Sets the default graphical device. `tikz` has nicer font rendering for LaTeX 
 * `fig.width` and `fig.height` : Sets width and height of the device.
 * `fig.cap` and `fig.align` : Set a caption and alignment
-* Can set encoding (for Icelandic characters) and dingbat font (reduces the size of pdfs).
+* Able to set encoding (for Icelandic characters) and dingbat font (reduces the size of pdfs).
 * Can group together device options `dev.args = list(option1 = "foo", option2 = "bar")`
 
 ## `cache = TRUE`
-* Caching is  helpful if you have a large document or `R` that takes a long time to certain chunks.
-* Caching comparing the MD5 hash of a cached chunk with MD5 hash of the same cache when `knit()` is re-run
-* You can set manual cache dependencies (i.e Chunk B depends on A) or this can be done automatically
+* Caching is  helpful if you have a large document or `R` takes a long time to evaluate certain chunks.
+* Caching compare the MD5 hash of a cached chunk with MD5 hash of the same cache when `knit()` is re-run
+* Manually set cache dependencies (i.e Chunk B depends on A) or do this automatically (`autodep = TRUE`)
 * Adding new data won't update a cache. One way to enable this is `file.info()` function in the chunk. For example,
 
 ````
