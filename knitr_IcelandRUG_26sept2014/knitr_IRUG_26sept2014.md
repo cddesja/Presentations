@@ -208,7 +208,7 @@ opts_chunk$set(fig.width=6, fig.align = 'center', echo = FALSE))
 ## Tables
 Tables are easily handled with `xtable`. Make sure to specify `results = "asis"` to render the table. 
 <!-- html table generated in R 3.1.1 by xtable 1.7-3 package -->
-<!-- Wed Sep 24 20:14:58 2014 -->
+<!-- Wed Sep 24 20:26:42 2014 -->
 <TABLE border=1>
 <TR> <TH>  </TH> <TH> Estimate </TH> <TH> Std. Error </TH> <TH> t value </TH> <TH> Pr(&gt;|t|) </TH>  </TR>
   <TR> <TD align="right"> (Intercept) </TD> <TD align="right"> -17.5791 </TD> <TD align="right"> 6.7584 </TD> <TD align="right"> -2.60 </TD> <TD align="right"> 0.0123 </TD> </TR>
@@ -246,27 +246,27 @@ speed              3.93      0.42         9.46       1.49\times 10^{-12}
 -------------------------------------------------------------
 
 ## Interactive figures (`ggvis`)
-<!--html_preserve--><div id="plot_id947331797-container" class="ggvis-output-container">
-<div id="plot_id947331797" class="ggvis-output"></div>
+<!--html_preserve--><div id="plot_id542596865-container" class="ggvis-output-container">
+<div id="plot_id542596865" class="ggvis-output"></div>
 <div class="plot-gear-icon">
 <nav class="ggvis-control">
 <a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
 <ul class="ggvis-dropdown">
 <li>
 Renderer: 
-<a id="plot_id947331797_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id947331797" data-renderer="svg">SVG</a>
+<a id="plot_id542596865_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id542596865" data-renderer="svg">SVG</a>
  | 
-<a id="plot_id947331797_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id947331797" data-renderer="canvas">Canvas</a>
+<a id="plot_id542596865_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id542596865" data-renderer="canvas">Canvas</a>
 </li>
 <li>
-<a id="plot_id947331797_download" class="ggvis-download" data-plot-id="plot_id947331797">Download</a>
+<a id="plot_id542596865_download" class="ggvis-download" data-plot-id="plot_id542596865">Download</a>
 </li>
 </ul>
 </nav>
 </div>
 </div>
 <script type="text/javascript">
-var plot_id947331797_spec = {
+var plot_id542596865_spec = {
 	"data" : [
 		{
 			"name" : "mtcars0",
@@ -392,7 +392,7 @@ var plot_id947331797_spec = {
 	},
 	"handlers" : null
 };
-ggvis.getPlot("plot_id947331797").parseSpec(plot_id947331797_spec);
+ggvis.getPlot("plot_id542596865").parseSpec(plot_id542596865_spec);
 </script><!--/html_preserve-->
 
 ## Figures options
@@ -440,7 +440,7 @@ y
 ```
 
 ```
-## [1] 0.085
+## [1] 7.8
 ```
 
 ```r
@@ -449,7 +449,7 @@ y
 ```
 
 ```
-## [1] 0.68
+## [1] -1.4
 ```
 
 ## Reusing whole chunks
@@ -479,7 +479,7 @@ y
 ```
 
 ```
-## [1] 0.91
+## [1] -1.2
 ```
 
 ```r
@@ -488,7 +488,7 @@ x
 ```
 
 ```
-## [1] 0.0078
+## [1] -0.14
 ```
 
 ## External code
@@ -532,6 +532,7 @@ read_chunk("ocean_conversions.R")
 * Reproducing research should be easier.
 * `knitr` makes creating dynamic reports very simple.
 * You should be able to share data and an `Rmd` or an `Rnw` file with a friend, colleague, or reviewer and they __should__ be able to replicate your findings.
+* [Packrat](http://cran.r-project.org/web/packages/packrat/) is an R package that helps you manage your project’s R package dependencies in an isolated, reproducible and portable way.
 
 ## Learning more
 * `knitr` has an excellent [website](http://yihui.name/knitr)

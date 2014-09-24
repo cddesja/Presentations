@@ -294,6 +294,7 @@ cat("```{r, nitrogen_conversion}\n```")
 * Reproducing research should be easier.
 * `knitr` makes creating dynamic reports very simple.
 * You should be able to share data and an `Rmd` or an `Rnw` file with a friend, colleague, or reviewer and they __should__ be able to replicate your findings.
+* [Packrat](http://cran.r-project.org/web/packages/packrat/) is an R package that helps you manage your project’s R package dependencies in an isolated, reproducible and portable way.
 
 ## Learning more
 * `knitr` has an excellent [website](http://yihui.name/knitr)

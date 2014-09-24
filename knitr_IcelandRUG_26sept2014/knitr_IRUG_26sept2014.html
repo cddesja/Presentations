@@ -302,7 +302,7 @@ opts_chunk$set(fig.width=6, fig.align = &#39;center&#39;, echo = FALSE))
 
 </article></slide><slide class=''><hgroup><h2>Tables</h2></hgroup><article  id="tables">
 
-Tables are easily handled with <code>xtable</code>. Make sure to specify <code>results = &quot;asis&quot;</code> to render the table. <!-- html table generated in R 3.1.1 by xtable 1.7-3 package --> <!-- Wed Sep 24 20:14:58 2014 -->
+Tables are easily handled with <code>xtable</code>. Make sure to specify <code>results = &quot;asis&quot;</code> to render the table. <!-- html table generated in R 3.1.1 by xtable 1.7-3 package --> <!-- Wed Sep 24 20:26:42 2014 -->
 
 <TABLE border="1">
 
@@ -462,27 +462,27 @@ print(xtable(mod1), type = &quot;html&quot;)
 
 </article></slide><slide class=''><hgroup><h2>Interactive figures (<code>ggvis</code>)</h2></hgroup><article  id="interactive-figures-ggvis">
 
-<p><div id="plot_id947331797-container" class="ggvis-output-container">
-<div id="plot_id947331797" class="ggvis-output"></div>
+<p><div id="plot_id542596865-container" class="ggvis-output-container">
+<div id="plot_id542596865" class="ggvis-output"></div>
 <div class="plot-gear-icon">
 <nav class="ggvis-control">
 <a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
 <ul class="ggvis-dropdown">
 <li>
 Renderer: 
-<a id="plot_id947331797_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id947331797" data-renderer="svg">SVG</a>
+<a id="plot_id542596865_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id542596865" data-renderer="svg">SVG</a>
  | 
-<a id="plot_id947331797_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id947331797" data-renderer="canvas">Canvas</a>
+<a id="plot_id542596865_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id542596865" data-renderer="canvas">Canvas</a>
 </li>
 <li>
-<a id="plot_id947331797_download" class="ggvis-download" data-plot-id="plot_id947331797">Download</a>
+<a id="plot_id542596865_download" class="ggvis-download" data-plot-id="plot_id542596865">Download</a>
 </li>
 </ul>
 </nav>
 </div>
 </div>
 <script type="text/javascript">
-var plot_id947331797_spec = {
+var plot_id542596865_spec = {
 	"data" : [
 		{
 			"name" : "mtcars0",
@@ -608,7 +608,7 @@ var plot_id947331797_spec = {
 	},
 	"handlers" : null
 };
-ggvis.getPlot("plot_id947331797").parseSpec(plot_id947331797_spec);
+ggvis.getPlot("plot_id542596865").parseSpec(plot_id542596865_spec);
 </script></p>
 
 </article></slide><slide class=''><hgroup><h2>Figures options</h2></hgroup><article  id="figures-options">
@@ -655,12 +655,12 @@ y
 
 <pre class = 'prettyprint lang-r'>y</pre>
 
-<pre >## [1] 0.085</pre>
+<pre >## [1] 7.8</pre>
 
 <pre class = 'prettyprint lang-r'>y &lt;- rcauchy(1)
 y</pre>
 
-<pre >## [1] 0.68</pre>
+<pre >## [1] -1.4</pre>
 
 </article></slide><slide class=''><hgroup><h2>Reusing whole chunks</h2></hgroup><article  id="reusing-whole-chunks">
 
@@ -682,12 +682,12 @@ z
 <pre class = 'prettyprint lang-r'>y &lt;- rcauchy(1)
 y</pre>
 
-<pre >## [1] 0.91</pre>
+<pre >## [1] -1.2</pre>
 
 <pre class = 'prettyprint lang-r'>x &lt;- y + rnorm(1)
 x</pre>
 
-<pre >## [1] 0.0078</pre>
+<pre >## [1] -0.14</pre>
 
 </article></slide><slide class=''><hgroup><h2>External code</h2></hgroup><article  id="external-code">
 
@@ -733,6 +733,7 @@ return(mgN)
 <li>Reproducing research should be easier.</li>
 <li><code>knitr</code> makes creating dynamic reports very simple.</li>
 <li>You should be able to share data and an <code>Rmd</code> or an <code>Rnw</code> file with a friend, colleague, or reviewer and they <strong>should</strong> be able to replicate your findings.</li>
+<li><a href='http://cran.r-project.org/web/packages/packrat/' title=''>Packrat</a> is an R package that helps you manage your project’s R package dependencies in an isolated, reproducible and portable way.</li>
 </ul>
 
 </article></slide><slide class=''><hgroup><h2>Learning more</h2></hgroup><article  id="learning-more">
