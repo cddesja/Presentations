@@ -88,7 +88,7 @@ For `knitr`, chunks are what we write `R` code in.
 Throughout I use __Markdown__ syntax as I've created an [ioslide](https://code.google.com/p/io-2012-slides/) presentation using [RMarkdown](http://rmarkdown.rstudio.com/ioslides_presentation_format.html). However, the `chunk.begin` and `chunk.end` syntax can __always__ can be substituted. (In fact, you can roll your own syntax for these if you hate the above!)
 
 
-## More on Chunks
+## More on chunks
 
 * Chunks have a plethora of options available by default 
 * You can also 'roll your own' chunk options provided they are valid `R` code.
@@ -112,7 +112,7 @@ opts_chunk$get("engine")
 
 * `knitr` works with other languagues too (python, ruby, etc) 
 
-## `knitr` Output  
+## `knitr` output  
 * `knitr` output may be __inline__
 
 ```
@@ -122,7 +122,7 @@ opts_chunk$get("engine")
 ```
 * Chunk option can be text, tabular, and graphical
 
-## Chunk Output
+## Chunk output
 * What will this generate?
     
     ```{r, cool_chunk, eval = -1, echo = c(1, 3), warning = FALSE, message = FALSE, fig.align ='center'}
@@ -141,7 +141,7 @@ opts_chunk$get("engine")
 ## coef(lm(dist ~ speed, data = cars))[1]
 ```
 
-<img src="./knitr_IRUG_25sept2014_files/figure-html/cool_chunk.png" title="" alt="" style="display: block; margin: auto;" />
+<img src="./knitr_IRUG_26sept2014_files/figure-html/cool_chunk.png" title="" alt="" style="display: block; margin: auto;" />
 
 ```r
 dnorm(0, sd = -1)
@@ -152,13 +152,13 @@ dnorm(0, sd = -1)
 ```
 
 
-## Helpful Chunk Output Options
+## Helpful chunk output options
 * `eval = TRUE` : Evaluate all or part of the current chunk
 * `echo = TRUE` : Show all or part of the source code
 * `results = 'asis'` : Writes raw output from R to the output document without markup. Helpful for creating tables with `xtable`. `markup` is the default.
 * `include = TRUE` : Code chunk will be included in output. If you don't want a chunk in the output but _still_ evaluated set this to `FALSE`
 
-## Perhaps Helpful?
+## Perhaps helpful?
 
 ```r
 foo <- 2
@@ -208,7 +208,7 @@ opts_chunk$set(fig.width=6, fig.align = 'center', echo = FALSE))
 ## Tables
 Tables are easily handled with `xtable`. Make sure to specify `results = "asis"` to render the table. 
 <!-- html table generated in R 3.1.1 by xtable 1.7-3 package -->
-<!-- Tue Sep 23 10:50:52 2014 -->
+<!-- Wed Sep 24 20:14:58 2014 -->
 <TABLE border=1>
 <TR> <TH>  </TH> <TH> Estimate </TH> <TH> Std. Error </TH> <TH> t value </TH> <TH> Pr(&gt;|t|) </TH>  </TR>
   <TR> <TD align="right"> (Intercept) </TD> <TD align="right"> -17.5791 </TD> <TD align="right"> 6.7584 </TD> <TD align="right"> -2.60 </TD> <TD align="right"> 0.0123 </TD> </TR>
@@ -246,27 +246,27 @@ speed              3.93      0.42         9.46       1.49\times 10^{-12}
 -------------------------------------------------------------
 
 ## Interactive figures (`ggvis`)
-<!--html_preserve--><div id="plot_id347547544-container" class="ggvis-output-container">
-<div id="plot_id347547544" class="ggvis-output"></div>
+<!--html_preserve--><div id="plot_id947331797-container" class="ggvis-output-container">
+<div id="plot_id947331797" class="ggvis-output"></div>
 <div class="plot-gear-icon">
 <nav class="ggvis-control">
 <a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
 <ul class="ggvis-dropdown">
 <li>
 Renderer: 
-<a id="plot_id347547544_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id347547544" data-renderer="svg">SVG</a>
+<a id="plot_id947331797_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id947331797" data-renderer="svg">SVG</a>
  | 
-<a id="plot_id347547544_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id347547544" data-renderer="canvas">Canvas</a>
+<a id="plot_id947331797_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id947331797" data-renderer="canvas">Canvas</a>
 </li>
 <li>
-<a id="plot_id347547544_download" class="ggvis-download" data-plot-id="plot_id347547544">Download</a>
+<a id="plot_id947331797_download" class="ggvis-download" data-plot-id="plot_id947331797">Download</a>
 </li>
 </ul>
 </nav>
 </div>
 </div>
 <script type="text/javascript">
-var plot_id347547544_spec = {
+var plot_id947331797_spec = {
 	"data" : [
 		{
 			"name" : "mtcars0",
@@ -392,7 +392,7 @@ var plot_id347547544_spec = {
 	},
 	"handlers" : null
 };
-ggvis.getPlot("plot_id347547544").parseSpec(plot_id347547544_spec);
+ggvis.getPlot("plot_id947331797").parseSpec(plot_id947331797_spec);
 </script><!--/html_preserve-->
 
 ## Figures options
@@ -413,4 +413,133 @@ ggvis.getPlot("plot_id347547544").parseSpec(plot_id347547544_spec);
 foo <- read.csv("foo")
 ...
 ````
+
+## Embed code chunks
+
+````
+```{r, A}
+y <- rcauchy(1)
+```
+```{r, B}
+y
+<<A>>
+y
+```
+````
+* Chunks can be nest recursively with each other as long as the recursion is finite. 
+
+
+## The answer
+
+```r
+y <- rcauchy(1)
+```
+
+```r
+y
+```
+
+```
+## [1] 0.085
+```
+
+```r
+y <- rcauchy(1)
+y
+```
+
+```
+## [1] 0.68
+```
+
+## Reusing whole chunks
+
+````
+```{r, cau, include = FALSE, eval = FALSE}
+y <- rcauchy(1)
+```
+```{r, norm, include = FALSE, eval = FALSE}
+y
+x <- y + rnorm(1)
+x
+```
+```{r, C, ref.label = c('cau','norm')}
+z <- y
+z
+```
+````
+
+## And the output
+
+
+
+```r
+y <- rcauchy(1)
+y
+```
+
+```
+## [1] 0.91
+```
+
+```r
+x <- y + rnorm(1)
+x
+```
+
+```
+## [1] 0.0078
+```
+
+## External code
+* External chunk code can be kept in `R` scripts and can be referenced by chunk label or the line number.
+
+
+```
+## @knitr nitrogen_conversion
+tons_mgN <- function(tons, unit){
+mgN <- (tons * 1e9) / 20 / 5.7 / unit
+return(mgN)
+}
+```
+
+
+```
+read_chunk("ocean_conversions.R")
+```
+
+
+````
+```{r, nitrogen_conversion}
+```
+````
+* specify `from` and `to` arguments to use lines numbers in `read_chunk()`.
+
+## Child documents
+* Just like LaTeX, child documents (`\include{foo.tex}`) consisting of smaller parts can be used with `knitr`.
+* Consist of plain chunks
+* To use this just specify the `child ='foo.Rnw'` or `'foo.Rmd'` if using `Rmarkdown`.
+
+
+## Hooks
+* Hooks allow you to expand the capability of `knitr`. 
+* Chunk hooks can be called before (say you want to modify some graphical setting) or after the chunk (if you want to insert text into output like LaTeX or Markdown commands).
+* Power users will be definitely interested in this. 
+* See [Yihui's hooks page](http://yihui.name/knitr/hooks) for more details. 
+
+
+## Reproducing research
+* Reproducing research should be easier.
+* `knitr` makes creating dynamic reports very simple.
+* You should be able to share data and an `Rmd` or an `Rnw` file with a friend, colleague, or reviewer and they __should__ be able to replicate your findings.
+
+## Learning more
+* `knitr` has an excellent [website](http://yihui.name/knitr)
+* Purchase Yihui's book from [Amazon](http://www.amazon.com/dp/1482203537/ref=cm_sw_su_dp) (_recommended_)
+* Visit StackOverflow and search on the tag `knitr`
+* [Rstudio blog](http://blog.rstudio.org/). Lots of interesting things happen here. 
+
+
+
+
 

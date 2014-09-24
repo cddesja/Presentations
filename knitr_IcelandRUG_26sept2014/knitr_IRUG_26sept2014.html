@@ -195,7 +195,7 @@ demo(&quot;notebook&quot;, package = &quot;knitr&quot;)</pre>
 
 <p>Throughout I use <strong>Markdown</strong> syntax as I&#39;ve created an <a href='https://code.google.com/p/io-2012-slides/' title=''>ioslide</a> presentation using <a href='http://rmarkdown.rstudio.com/ioslides_presentation_format.html' title=''>RMarkdown</a>. However, the <code>chunk.begin</code> and <code>chunk.end</code> syntax can <strong>always</strong> can be substituted. (In fact, you can roll your own syntax for these if you hate the above!)</p>
 
-</article></slide><slide class=''><hgroup><h2>More on Chunks</h2></hgroup><article  id="more-on-chunks">
+</article></slide><slide class=''><hgroup><h2>More on chunks</h2></hgroup><article  id="more-on-chunks">
 
 <ul>
 <li>Chunks have a plethora of options available by default</li>
@@ -214,7 +214,7 @@ demo(&quot;notebook&quot;, package = &quot;knitr&quot;)</pre>
 <li><code>knitr</code> works with other languagues too (python, ruby, etc)</li>
 </ul>
 
-</article></slide><slide class=''><hgroup><h2><code>knitr</code> Output</h2></hgroup><article  id="knitr-output">
+</article></slide><slide class=''><hgroup><h2><code>knitr</code> output</h2></hgroup><article  id="knitr-output">
 
 <ul>
 <li><code>knitr</code> output may be <strong>inline</strong></li>
@@ -228,7 +228,7 @@ demo(&quot;notebook&quot;, package = &quot;knitr&quot;)</pre>
 <li>Chunk option can be text, tabular, and graphical</li>
 </ul>
 
-</article></slide><slide class=''><hgroup><h2>Chunk Output</h2></hgroup><article  id="chunk-output">
+</article></slide><slide class=''><hgroup><h2>Chunk output</h2></hgroup><article  id="chunk-output">
 
 <ul>
 <li><p>What will this generate?</p>
@@ -254,7 +254,7 @@ demo(&quot;notebook&quot;, package = &quot;knitr&quot;)</pre>
 
 <pre >## [1] NaN</pre>
 
-</article></slide><slide class=''><hgroup><h2>Helpful Chunk Output Options</h2></hgroup><article  id="helpful-chunk-output-options">
+</article></slide><slide class=''><hgroup><h2>Helpful chunk output options</h2></hgroup><article  id="helpful-chunk-output-options">
 
 <ul>
 <li><code>eval = TRUE</code> : Evaluate all or part of the current chunk</li>
@@ -263,7 +263,7 @@ demo(&quot;notebook&quot;, package = &quot;knitr&quot;)</pre>
 <li><code>include = TRUE</code> : Code chunk will be included in output. If you don&#39;t want a chunk in the output but <em>still</em> evaluated set this to <code>FALSE</code></li>
 </ul>
 
-</article></slide><slide class=''><hgroup><h2>Perhaps Helpful?</h2></hgroup><article  id="perhaps-helpful">
+</article></slide><slide class=''><hgroup><h2>Perhaps helpful?</h2></hgroup><article  id="perhaps-helpful">
 
 <pre class = 'prettyprint lang-r'>foo &lt;- 2
 bar &lt;- foo</pre>
@@ -302,7 +302,7 @@ opts_chunk$set(fig.width=6, fig.align = &#39;center&#39;, echo = FALSE))
 
 </article></slide><slide class=''><hgroup><h2>Tables</h2></hgroup><article  id="tables">
 
-Tables are easily handled with <code>xtable</code>. Make sure to specify <code>results = &quot;asis&quot;</code> to render the table. <!-- html table generated in R 3.1.1 by xtable 1.7-3 package --> <!-- Tue Sep 23 10:50:52 2014 -->
+Tables are easily handled with <code>xtable</code>. Make sure to specify <code>results = &quot;asis&quot;</code> to render the table. <!-- html table generated in R 3.1.1 by xtable 1.7-3 package --> <!-- Wed Sep 24 20:14:58 2014 -->
 
 <TABLE border="1">
 
@@ -462,27 +462,27 @@ print(xtable(mod1), type = &quot;html&quot;)
 
 </article></slide><slide class=''><hgroup><h2>Interactive figures (<code>ggvis</code>)</h2></hgroup><article  id="interactive-figures-ggvis">
 
-<p><div id="plot_id347547544-container" class="ggvis-output-container">
-<div id="plot_id347547544" class="ggvis-output"></div>
+<p><div id="plot_id947331797-container" class="ggvis-output-container">
+<div id="plot_id947331797" class="ggvis-output"></div>
 <div class="plot-gear-icon">
 <nav class="ggvis-control">
 <a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
 <ul class="ggvis-dropdown">
 <li>
 Renderer: 
-<a id="plot_id347547544_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id347547544" data-renderer="svg">SVG</a>
+<a id="plot_id947331797_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id947331797" data-renderer="svg">SVG</a>
  | 
-<a id="plot_id347547544_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id347547544" data-renderer="canvas">Canvas</a>
+<a id="plot_id947331797_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id947331797" data-renderer="canvas">Canvas</a>
 </li>
 <li>
-<a id="plot_id347547544_download" class="ggvis-download" data-plot-id="plot_id347547544">Download</a>
+<a id="plot_id947331797_download" class="ggvis-download" data-plot-id="plot_id947331797">Download</a>
 </li>
 </ul>
 </nav>
 </div>
 </div>
 <script type="text/javascript">
-var plot_id347547544_spec = {
+var plot_id947331797_spec = {
 	"data" : [
 		{
 			"name" : "mtcars0",
@@ -608,7 +608,7 @@ var plot_id347547544_spec = {
 	},
 	"handlers" : null
 };
-ggvis.getPlot("plot_id347547544").parseSpec(plot_id347547544_spec);
+ggvis.getPlot("plot_id947331797").parseSpec(plot_id947331797_spec);
 </script></p>
 
 </article></slide><slide class=''><hgroup><h2>Figures options</h2></hgroup><article  id="figures-options">
@@ -632,7 +632,117 @@ ggvis.getPlot("plot_id347547544").parseSpec(plot_id347547544_spec);
 
 <pre >```{r, foo_time = file.info(&#39;foo.csv&#39;)$mtime}
 foo &lt;- read.csv(&quot;foo&quot;)
-...</pre></article></slide>
+...</pre>
+
+</article></slide><slide class=''><hgroup><h2>Embed code chunks</h2></hgroup><article  id="embed-code-chunks">
+
+<pre >```{r, A}
+y &lt;- rcauchy(1)
+```
+```{r, B}
+y
+&lt;&lt;A&gt;&gt;
+y
+```</pre>
+
+<ul>
+<li>Chunks can be nest recursively with each other as long as the recursion is finite.</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>The answer</h2></hgroup><article  id="the-answer">
+
+<pre class = 'prettyprint lang-r'>y &lt;- rcauchy(1)</pre>
+
+<pre class = 'prettyprint lang-r'>y</pre>
+
+<pre >## [1] 0.085</pre>
+
+<pre class = 'prettyprint lang-r'>y &lt;- rcauchy(1)
+y</pre>
+
+<pre >## [1] 0.68</pre>
+
+</article></slide><slide class=''><hgroup><h2>Reusing whole chunks</h2></hgroup><article  id="reusing-whole-chunks">
+
+<pre >```{r, cau, include = FALSE, eval = FALSE}
+y &lt;- rcauchy(1)
+```
+```{r, norm, include = FALSE, eval = FALSE}
+y
+x &lt;- y + rnorm(1)
+x
+```
+```{r, C, ref.label = c(&#39;cau&#39;,&#39;norm&#39;)}
+z &lt;- y
+z
+```</pre>
+
+</article></slide><slide class=''><hgroup><h2>And the output</h2></hgroup><article  id="and-the-output">
+
+<pre class = 'prettyprint lang-r'>y &lt;- rcauchy(1)
+y</pre>
+
+<pre >## [1] 0.91</pre>
+
+<pre class = 'prettyprint lang-r'>x &lt;- y + rnorm(1)
+x</pre>
+
+<pre >## [1] 0.0078</pre>
+
+</article></slide><slide class=''><hgroup><h2>External code</h2></hgroup><article  id="external-code">
+
+<ul>
+<li>External chunk code can be kept in <code>R</code> scripts and can be referenced by chunk label or the line number.</li>
+</ul>
+
+<pre >## @knitr nitrogen_conversion
+tons_mgN &lt;- function(tons, unit){
+mgN &lt;- (tons * 1e9) / 20 / 5.7 / unit
+return(mgN)
+}</pre>
+
+<pre >read_chunk(&quot;ocean_conversions.R&quot;)</pre>
+
+<pre >```{r, nitrogen_conversion}
+```</pre>
+
+<ul>
+<li>specify <code>from</code> and <code>to</code> arguments to use lines numbers in <code>read_chunk()</code>.</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Child documents</h2></hgroup><article  id="child-documents">
+
+<ul>
+<li>Just like LaTeX, child documents (<code>\include{foo.tex}</code>) consisting of smaller parts can be used with <code>knitr</code>.</li>
+<li>Consist of plain chunks</li>
+<li>To use this just specify the <code>child =&#39;foo.Rnw&#39;</code> or <code>&#39;foo.Rmd&#39;</code> if using <code>Rmarkdown</code>.</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Hooks</h2></hgroup><article  id="hooks">
+
+<ul>
+<li>Hooks allow you to expand the capability of <code>knitr</code>.</li>
+<li>Chunk hooks can be called before (say you want to modify some graphical setting) or after the chunk (if you want to insert text into output like LaTeX or Markdown commands).</li>
+<li>Power users will be definitely interested in this.</li>
+<li>See <a href='http://yihui.name/knitr/hooks' title=''>Yihui&#39;s hooks page</a> for more details.</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Reproducing research</h2></hgroup><article  id="reproducing-research">
+
+<ul>
+<li>Reproducing research should be easier.</li>
+<li><code>knitr</code> makes creating dynamic reports very simple.</li>
+<li>You should be able to share data and an <code>Rmd</code> or an <code>Rnw</code> file with a friend, colleague, or reviewer and they <strong>should</strong> be able to replicate your findings.</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Learning more</h2></hgroup><article  id="learning-more">
+
+<ul>
+<li><code>knitr</code> has an excellent <a href='http://yihui.name/knitr' title=''>website</a></li>
+<li>Purchase Yihui&#39;s book from <a href='http://www.amazon.com/dp/1482203537/ref=cm_sw_su_dp' title=''>Amazon</a> (<em>recommended</em>)</li>
+<li>Visit StackOverflow and search on the tag <code>knitr</code></li>
+<li><a href='http://blog.rstudio.org/' title=''>Rstudio blog</a>. Lots of interesting things happen here.</li>
+</ul></article></slide>
 
 
   <slide class="backdrop"></slide>
