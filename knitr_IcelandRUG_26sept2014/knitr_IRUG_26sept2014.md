@@ -30,6 +30,9 @@ Which one should you use, see [Yihue Xie's post](http://yihui.name/en/2013/10/ma
 
 The developers of Rstudio are often the first to integrate the latest and greatest from `R`. Else, [ESS](http://ess.r-project.org/) and [LyX](http://www.lyx.org/) are fully integrated with `knitr`. 
 
+## Knitting {.flexbox .vcenter}
+![knitting_girl](knitr_IRUG_26sept2014_files/knitting_girl.png)
+
 ## Why `knitr`?
 
 
@@ -208,7 +211,7 @@ opts_chunk$set(fig.width=6, fig.align = 'center', echo = FALSE))
 ## Tables
 Tables are easily handled with `xtable`. Make sure to specify `results = "asis"` to render the table. 
 <!-- html table generated in R 3.1.1 by xtable 1.7-3 package -->
-<!-- Wed Sep 24 20:26:42 2014 -->
+<!-- Thu Sep 25 18:08:13 2014 -->
 <TABLE border=1>
 <TR> <TH>  </TH> <TH> Estimate </TH> <TH> Std. Error </TH> <TH> t value </TH> <TH> Pr(&gt;|t|) </TH>  </TR>
   <TR> <TD align="right"> (Intercept) </TD> <TD align="right"> -17.5791 </TD> <TD align="right"> 6.7584 </TD> <TD align="right"> -2.60 </TD> <TD align="right"> 0.0123 </TD> </TR>
@@ -245,28 +248,28 @@ Coefficients     Estimate     Standard    t-value     Pr(>|t|)
 speed              3.93      0.42         9.46       1.49\times 10^{-12}  
 -------------------------------------------------------------
 
-## Interactive figures (`ggvis`)
-<!--html_preserve--><div id="plot_id542596865-container" class="ggvis-output-container">
-<div id="plot_id542596865" class="ggvis-output"></div>
+## Interactive figures (`ggvis`) {.flexbox .vcenter}
+<!--html_preserve--><div id="plot_id402649641-container" class="ggvis-output-container">
+<div id="plot_id402649641" class="ggvis-output"></div>
 <div class="plot-gear-icon">
 <nav class="ggvis-control">
 <a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
 <ul class="ggvis-dropdown">
 <li>
 Renderer: 
-<a id="plot_id542596865_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id542596865" data-renderer="svg">SVG</a>
+<a id="plot_id402649641_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id402649641" data-renderer="svg">SVG</a>
  | 
-<a id="plot_id542596865_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id542596865" data-renderer="canvas">Canvas</a>
+<a id="plot_id402649641_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id402649641" data-renderer="canvas">Canvas</a>
 </li>
 <li>
-<a id="plot_id542596865_download" class="ggvis-download" data-plot-id="plot_id542596865">Download</a>
+<a id="plot_id402649641_download" class="ggvis-download" data-plot-id="plot_id402649641">Download</a>
 </li>
 </ul>
 </nav>
 </div>
 </div>
 <script type="text/javascript">
-var plot_id542596865_spec = {
+var plot_id402649641_spec = {
 	"data" : [
 		{
 			"name" : "mtcars0",
@@ -392,7 +395,7 @@ var plot_id542596865_spec = {
 	},
 	"handlers" : null
 };
-ggvis.getPlot("plot_id542596865").parseSpec(plot_id542596865_spec);
+ggvis.getPlot("plot_id402649641").parseSpec(plot_id402649641_spec);
 </script><!--/html_preserve-->
 
 ## Figures options
@@ -440,7 +443,7 @@ y
 ```
 
 ```
-## [1] 7.8
+## [1] 0.46
 ```
 
 ```r
@@ -449,7 +452,7 @@ y
 ```
 
 ```
-## [1] -1.4
+## [1] 12
 ```
 
 ## Reusing whole chunks
@@ -479,7 +482,7 @@ y
 ```
 
 ```
-## [1] -1.2
+## [1] -0.028
 ```
 
 ```r
@@ -488,7 +491,7 @@ x
 ```
 
 ```
-## [1] -0.14
+## [1] 0.27
 ```
 
 ## External code
@@ -519,6 +522,8 @@ read_chunk("ocean_conversions.R")
 * Just like LaTeX, child documents (`\include{foo.tex}`) consisting of smaller parts can be used with `knitr`.
 * Consist of plain chunks
 * To use this just specify the `child ='foo.Rnw'` or `'foo.Rmd'` if using `Rmarkdown`.
+* These could be called _conditionally_. For example, if you were doing a report and only ran an additional set of analyses conditional on some output.
+* `child = if(bar > foo) 'foo.Rnw'`
 
 
 ## Hooks
@@ -540,6 +545,24 @@ read_chunk("ocean_conversions.R")
 * Visit StackOverflow and search on the tag `knitr`
 * [Rstudio blog](http://blog.rstudio.org/). Lots of interesting things happen here. 
 
+
+##{.flexbox .vcenter}
+
+![](https://i.imgur.com/0N8Kt5s.gif)
+
+<p>
+</p>
+
+<div, font-size = 20pt, class="blue1">
+Thanks for coming
+<div>
+
+<p>
+</p>
+<p>
+</p>
+
+[https://lundinn.github.io/](https://lundinn.github.io/)
 
 
 

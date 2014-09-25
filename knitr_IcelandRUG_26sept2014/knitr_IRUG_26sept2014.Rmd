@@ -45,6 +45,9 @@ Which one should you use, see [Yihue Xie's post](http://yihui.name/en/2013/10/ma
 
 The developers of Rstudio are often the first to integrate the latest and greatest from `R`. Else, [ESS](http://ess.r-project.org/) and [LyX](http://www.lyx.org/) are fully integrated with `knitr`. 
 
+## Knitting {.flexbox .vcenter}
+![knitting_girl](knitr_IRUG_26sept2014_files/knitting_girl.png)
+
 ## Why `knitr`?
 
 ```{r, eval=FALSE}
@@ -205,7 +208,7 @@ Coefficients     Estimate     Standard    t-value     Pr(>|t|)
 `r rownames(coef_tab)[2] `              `r coef_tab[2,1]`      `r coef_tab[2,2]`         `r coef_tab[2,3]`       `r coef_tab[2,4]`  
 -------------------------------------------------------------
 
-## Interactive figures (`ggvis`)
+## Interactive figures (`ggvis`) {.flexbox .vcenter}
 ```{r fig.height=3, fig.width=3, fig.align='center', echo = FALSE}
 mtcars %>% ggvis(~wt, ~mpg, size := 300, opacity := 0.4) %>% layer_points()
 ```
@@ -281,6 +284,8 @@ cat("```{r, nitrogen_conversion}\n```")
 * Just like LaTeX, child documents (`\include{foo.tex}`) consisting of smaller parts can be used with `knitr`.
 * Consist of plain chunks
 * To use this just specify the `child ='foo.Rnw'` or `'foo.Rmd'` if using `Rmarkdown`.
+* These could be called _conditionally_. For example, if you were doing a report and only ran an additional set of analyses conditional on some output.
+* `child = if(bar > foo) 'foo.Rnw'`
 
 
 ## Hooks
@@ -302,6 +307,24 @@ cat("```{r, nitrogen_conversion}\n```")
 * Visit StackOverflow and search on the tag `knitr`
 * [Rstudio blog](http://blog.rstudio.org/). Lots of interesting things happen here. 
 
+
+##{.flexbox .vcenter}
+
+![](https://i.imgur.com/0N8Kt5s.gif)
+
+<p>
+</p>
+
+<div, font-size = 20pt, class="blue2">
+Thanks for coming
+<div>
+
+<p>
+</p>
+<p>
+</p>
+
+[https://lundinn.github.io/](https://lundinn.github.io/)
 
 
 
