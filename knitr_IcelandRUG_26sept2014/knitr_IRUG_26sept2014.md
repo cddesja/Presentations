@@ -28,7 +28,7 @@ Which one should you use, see [Yihue Xie's post](http://yihui.name/en/2013/10/ma
 
 - [Rstudio](http://www.rstudio.com) (_recommended_, if you're not wedded to an IDE)
 
-The developers of Rstudio are often the first to integrate the latest and greatest from `R`. Else, [ESS](http://ess.r-project.org/) and [LyX](http://www.lyx.org/) are fully integrated with `knitr`. 
+The developers of Rstudio are often the first to integrate the latest and greatest from `R`. Else, [ESS](http://ess.r-project.org/) and [LyX](http://www.lyx.org/) are fully integrated with `knitr` or add a custom command to your favorite editor. 
 
 ## Knitting {.flexbox .vcenter}
 ![knitting_girl](knitr_IRUG_26sept2014_files/knitting_girl.png)
@@ -43,9 +43,9 @@ install.packages("knitr", dependencies = TRUE)
 How can `knitr` help us achieve reproducibility?
 
 1. We __never__ need to copy and paste results into reports.
-2. If the data changes, our models, figures, and tables are __automatically updated__.
+2. If the data changes, our models, figures, and tables are __automatically updated__*.
 3. From a `knitr` document, automatically generate a report using `knit()` or extract the `R` code using `purl()`.
-5. Generate a report from an `R` script with `stitch()` and add text with `spin()`
+5. Generate a LaTeX or Markdown report from an `R` script with `stitch()` and add text with `spin()`
 4. It is much more feature rich than Sweave.
 
 ## `knitr` basics
@@ -88,7 +88,7 @@ For `knitr`, chunks are what we write `R` code in.
     <insert R code for LaTeX>
     @
 
-Throughout I use __Markdown__ syntax as I've created an [ioslide](https://code.google.com/p/io-2012-slides/) presentation using [RMarkdown](http://rmarkdown.rstudio.com/ioslides_presentation_format.html). However, the `chunk.begin` and `chunk.end` syntax can __always__ can be substituted. (In fact, you can roll your own syntax for these if you hate the above!)
+Throughout I use __Markdown__ syntax as I've created an [ioslide](https://code.google.com/p/io-2012-slides/) presentation using [RMarkdown](http://rmarkdown.rstudio.com/ioslides_presentation_format.html). However, the `chunk.begin` and `chunk.end` syntax can __always__ be interchanged. (In fact, you can roll your own syntax for these if you hate the above!)
 
 
 ## More on chunks
@@ -123,7 +123,14 @@ opts_chunk$get("engine")
 
 \Sexpr{<insert R code for LaTeX>}
 ```
-* Chunk option can be text, tabular, and graphical
+
+* A realization of a $\chi_2^2$ is 1.48.
+
+```
+A realization of a $\chi_2^2$ is `r rchisq(1, df = 2)`.
+```
+
+* Chunk option can for __text__, __tabular__, or __graphical__ output.
 
 ## Chunk output
 * What will this generate?
@@ -134,7 +141,7 @@ opts_chunk$get("engine")
     
     ggplot(aes(x=speed, y = dist), data = cars) + geom_point(col = "#56B4E9") + geom_smooth(col = "999999") + theme_bw() + ylab("Driving Speed") + xlab("Distance to Stop")
     
-    dnorm(0, sd = -1)
+    rnorm(0, sd = -1)
 
 ``````
 
@@ -147,11 +154,11 @@ opts_chunk$get("engine")
 <img src="./knitr_IRUG_26sept2014_files/figure-html/cool_chunk.png" title="" alt="" style="display: block; margin: auto;" />
 
 ```r
-dnorm(0, sd = -1)
+rnorm(0, sd = -1)
 ```
 
 ```
-## [1] NaN
+## numeric(0)
 ```
 
 
@@ -175,6 +182,7 @@ bar <- foo
 ## they are the same
 ```
 
+## The code 
 
 ````
 ```{r}
@@ -188,6 +196,8 @@ cat("foo is greater than bar")
 cat("they are the same")
 ```
 ````
+
+
 
 ## Local vs. global settings
 * Often we want to set options for our entire document rather than for every chunk
@@ -211,7 +221,7 @@ opts_chunk$set(fig.width=6, fig.align = 'center', echo = FALSE))
 ## Tables
 Tables are easily handled with `xtable`. Make sure to specify `results = "asis"` to render the table. 
 <!-- html table generated in R 3.1.1 by xtable 1.7-3 package -->
-<!-- Thu Sep 25 18:08:13 2014 -->
+<!-- Fri Sep 26 11:17:06 2014 -->
 <TABLE border=1>
 <TR> <TH>  </TH> <TH> Estimate </TH> <TH> Std. Error </TH> <TH> t value </TH> <TH> Pr(&gt;|t|) </TH>  </TR>
   <TR> <TD align="right"> (Intercept) </TD> <TD align="right"> -17.5791 </TD> <TD align="right"> 6.7584 </TD> <TD align="right"> -2.60 </TD> <TD align="right"> 0.0123 </TD> </TR>
@@ -221,7 +231,7 @@ Tables are easily handled with `xtable`. Make sure to specify `results = "asis"`
 </p>
 Finer control of tables with LaTeX. Finally, we can insert our fitted model using inline code:
 
-$\hat{dist_i} = -17.58 + 3.93 speed_i$
+$\hat{dist}_i = -17.58 + 3.93 speed_i$
 
 ## Code used
     ```{r, results = "asis", echo=FALSE}
@@ -249,27 +259,27 @@ speed              3.93      0.42         9.46       1.49\times 10^{-12}
 -------------------------------------------------------------
 
 ## Interactive figures (`ggvis`) {.flexbox .vcenter}
-<!--html_preserve--><div id="plot_id402649641-container" class="ggvis-output-container">
-<div id="plot_id402649641" class="ggvis-output"></div>
+<!--html_preserve--><div id="plot_id650177452-container" class="ggvis-output-container">
+<div id="plot_id650177452" class="ggvis-output"></div>
 <div class="plot-gear-icon">
 <nav class="ggvis-control">
 <a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
 <ul class="ggvis-dropdown">
 <li>
 Renderer: 
-<a id="plot_id402649641_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id402649641" data-renderer="svg">SVG</a>
+<a id="plot_id650177452_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id650177452" data-renderer="svg">SVG</a>
  | 
-<a id="plot_id402649641_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id402649641" data-renderer="canvas">Canvas</a>
+<a id="plot_id650177452_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id650177452" data-renderer="canvas">Canvas</a>
 </li>
 <li>
-<a id="plot_id402649641_download" class="ggvis-download" data-plot-id="plot_id402649641">Download</a>
+<a id="plot_id650177452_download" class="ggvis-download" data-plot-id="plot_id650177452">Download</a>
 </li>
 </ul>
 </nav>
 </div>
 </div>
 <script type="text/javascript">
-var plot_id402649641_spec = {
+var plot_id650177452_spec = {
 	"data" : [
 		{
 			"name" : "mtcars0",
@@ -395,21 +405,21 @@ var plot_id402649641_spec = {
 	},
 	"handlers" : null
 };
-ggvis.getPlot("plot_id402649641").parseSpec(plot_id402649641_spec);
+ggvis.getPlot("plot_id650177452").parseSpec(plot_id650177452_spec);
 </script><!--/html_preserve-->
 
 ## Figures options
-* `dev = 'png'` : Sets the default graphical device. `tikz` has nicer font rendering for LaTeX 
+* `dev = 'png'` : Sets the default graphical device. `tikz` has nicer font rendering for LaTeX. Can interact with `ggobi`, `graphviz`, `rgl`, etc. 
 * `fig.width` and `fig.height` : Sets width and height of the device.
 * `fig.cap` and `fig.align` : Set a caption and alignment
 * Able to set encoding (for Icelandic characters) and dingbat font (reduces the size of pdfs).
-* Can group together device options `dev.args = list(option1 = "foo", option2 = "bar")`
+* Can send additional graphic device specific arguments via `dev.args = list(option1 = "foo", option2 = "bar")`
 
 ## `cache = TRUE`
 * Caching is  helpful if you have a large document or `R` takes a long time to evaluate certain chunks.
-* Caching compare the MD5 hash of a cached chunk with MD5 hash of the same cache when `knit()` is re-run
+* Caching compares the MD5 hash of a cached chunk with the MD5 hash of the same cache when `knit()` is re-run
 * Manually set cache dependencies (i.e Chunk B depends on A) or do this automatically (`autodep = TRUE`)
-* Adding new data won't update a cache. One way to enable this is `file.info()` function in the chunk. For example,
+* Adding _new data won't update a cache_. One way to enable this is `file.info()` function in the chunk. For example,
 
 ````
 ```{r, foo_time = file.info('foo.csv')$mtime}
@@ -443,7 +453,7 @@ y
 ```
 
 ```
-## [1] 0.46
+## [1] -0.15
 ```
 
 ```r
@@ -452,7 +462,7 @@ y
 ```
 
 ```
-## [1] 12
+## [1] 2.4
 ```
 
 ## Reusing whole chunks
@@ -466,9 +476,7 @@ y
 x <- y + rnorm(1)
 x
 ```
-```{r, C, ref.label = c('cau','norm')}
-z <- y
-z
+```{r, C, ref.label = c('cau','norm')
 ```
 ````
 
@@ -482,7 +490,7 @@ y
 ```
 
 ```
-## [1] -0.028
+## [1] 1.4
 ```
 
 ```r
@@ -491,7 +499,7 @@ x
 ```
 
 ```
-## [1] 0.27
+## [1] -0.35
 ```
 
 ## External code
@@ -508,7 +516,7 @@ return(mgN)
 
 
 ```
-read_chunk("ocean_conversions.R")
+read_chunk("nitrogen_conversions.R")
 ```
 
 
@@ -528,16 +536,22 @@ read_chunk("ocean_conversions.R")
 
 ## Hooks
 * Hooks allow you to expand the capability of `knitr`. 
-* Chunk hooks can be called before (say you want to modify some graphical setting) or after the chunk (if you want to insert text into output like LaTeX or Markdown commands).
-* Power users will be definitely interested in this. 
+* Chunk hooks can be called before (say want to crop the margins of a graph via `par()` or after the chunk (if you want to insert commands into output like LaTeX or Markdown commands).
 * See [Yihui's hooks page](http://yihui.name/knitr/hooks) for more details. 
+
+## Packrat
+* [Packrat](http://cran.r-project.org/web/packages/packrat/) is an R package that helps you manage your project’s R package dependencies in an isolated, reproducible and portable way.
+* `init()`, initialize a new packrat project.
+* `snapshot()`, take a snapshot of the installed packages.
+* `bundle()`, bundles (tarball) a packrat project for sharing.
+* `unbundle()`, unbundles a packrat project.
+* This will modify `.Rprofile`! 
 
 
 ## Reproducing research
 * Reproducing research should be easier.
 * `knitr` makes creating dynamic reports very simple.
 * You should be able to share data and an `Rmd` or an `Rnw` file with a friend, colleague, or reviewer and they __should__ be able to replicate your findings.
-* [Packrat](http://cran.r-project.org/web/packages/packrat/) is an R package that helps you manage your project’s R package dependencies in an isolated, reproducible and portable way.
 
 ## Learning more
 * `knitr` has an excellent [website](http://yihui.name/knitr)
@@ -553,7 +567,7 @@ read_chunk("ocean_conversions.R")
 <p>
 </p>
 
-<div, font-size = 20pt, class="blue1">
+<div, font-size = 20pt, class="blue2">
 Thanks for coming
 <div>
 
@@ -563,6 +577,7 @@ Thanks for coming
 </p>
 
 [https://lundinn.github.io/](https://lundinn.github.io/)
+
 
 
 

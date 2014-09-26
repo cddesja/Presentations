@@ -43,7 +43,7 @@ Which one should you use, see [Yihue Xie's post](http://yihui.name/en/2013/10/ma
 
 - [Rstudio](http://www.rstudio.com) (_recommended_, if you're not wedded to an IDE)
 
-The developers of Rstudio are often the first to integrate the latest and greatest from `R`. Else, [ESS](http://ess.r-project.org/) and [LyX](http://www.lyx.org/) are fully integrated with `knitr`. 
+The developers of Rstudio are often the first to integrate the latest and greatest from `R`. Else, [ESS](http://ess.r-project.org/) and [LyX](http://www.lyx.org/) are fully integrated with `knitr` or add a custom command to your favorite editor. 
 
 ## Knitting {.flexbox .vcenter}
 ![knitting_girl](knitr_IRUG_26sept2014_files/knitting_girl.png)
@@ -57,9 +57,9 @@ install.packages("knitr", dependencies = TRUE)
 How can `knitr` help us achieve reproducibility?
 
 1. We __never__ need to copy and paste results into reports.
-2. If the data changes, our models, figures, and tables are __automatically updated__.
+2. If the data changes, our models, figures, and tables are __automatically updated__*.
 3. From a `knitr` document, automatically generate a report using `knit()` or extract the `R` code using `purl()`.
-5. Generate a report from an `R` script with `stitch()` and add text with `spin()`
+5. Generate a LaTeX or Markdown report from an `R` script with `stitch()` and add text with `spin()`
 4. It is much more feature rich than Sweave.
 
 ## `knitr` basics
@@ -90,7 +90,7 @@ For `knitr`, chunks are what we write `R` code in.
     <insert R code for LaTeX>
     @
 
-Throughout I use __Markdown__ syntax as I've created an [ioslide](https://code.google.com/p/io-2012-slides/) presentation using [RMarkdown](http://rmarkdown.rstudio.com/ioslides_presentation_format.html). However, the `chunk.begin` and `chunk.end` syntax can __always__ can be substituted. (In fact, you can roll your own syntax for these if you hate the above!)
+Throughout I use __Markdown__ syntax as I've created an [ioslide](https://code.google.com/p/io-2012-slides/) presentation using [RMarkdown](http://rmarkdown.rstudio.com/ioslides_presentation_format.html). However, the `chunk.begin` and `chunk.end` syntax can __always__ be interchanged. (In fact, you can roll your own syntax for these if you hate the above!)
 
 
 ## More on chunks
@@ -110,7 +110,13 @@ opts_chunk$get("engine")
 ```{r, comment = NA, echo = FALSE}
 cat("\`r <insert R code for Markdown>`\n\n\\Sexpr{<insert R code for LaTeX>}")
 ```
-* Chunk option can be text, tabular, and graphical
+
+* A realization of a $\chi_2^2$ is `r rchisq(1, df = 2)`.
+```{r, comment = NA, echo = FALSE}
+cat("A realization of a $\\chi_2^2$ is `r rchisq(1, df = 2)`.")
+```
+
+* Chunk option can for __text__, __tabular__, or __graphical__ output.
 
 ## Chunk output
 * What will this generate?
@@ -121,7 +127,7 @@ cat("\`r <insert R code for Markdown>`\n\n\\Sexpr{<insert R code for LaTeX>}")
     
     ggplot(aes(x=speed, y = dist), data = cars) + geom_point(col = "#56B4E9") + geom_smooth(col = "999999") + theme_bw() + ylab("Driving Speed") + xlab("Distance to Stop")
     
-    dnorm(0, sd = -1)
+    rnorm(0, sd = -1)
 
 ``````
 
@@ -129,7 +135,7 @@ cat("\`r <insert R code for Markdown>`\n\n\\Sexpr{<insert R code for LaTeX>}")
 ```{r, cool_chunk, eval = -1, echo = c(1, 3), warning = FALSE, message = FALSE, fig.align ='center'}
 coef(lm(dist ~ speed, data = cars))[1]
 ggplot(aes(x=speed, y = dist), data = cars) + geom_point(col = "#56B4E9") + geom_smooth(col = "999999") + theme_bw() + ylab("Driving Speed") + xlab("Distance to Stop")
-dnorm(0, sd = -1)
+rnorm(0, sd = -1)
 ```
 
 
@@ -153,9 +159,12 @@ cat("foo is greater than bar")
 cat("they are the same")
 ```
 
+## The code 
 ```{r, comment=NA, echo = FALSE}
 cat("```{r}\nfoo <- 2\nbar <- foo\n```\n```{r eval = foo < bar, echo = FALSE}\ncat(\"foo is greater than bar\")\n```\n```{r eval = foo == bar, echo = FALSE}\ncat(\"they are the same\")\n```")
 ```
+
+
 
 ## Local vs. global settings
 * Often we want to set options for our entire document rather than for every chunk
@@ -182,7 +191,7 @@ print(xtable(mod1), type = "html")
 </p>
 Finer control of tables with LaTeX. Finally, we can insert our fitted model using inline code:
 
-$\hat{dist_i} = `r coef_tab[1,1]` + `r coef_tab[2,1] ` speed_i$
+$\hat{dist}_i = `r coef_tab[1,1]` + `r coef_tab[2,1] ` speed_i$
 
 ## Code used
     ```{r, results = "asis", echo=FALSE}`r ''`
@@ -214,17 +223,17 @@ mtcars %>% ggvis(~wt, ~mpg, size := 300, opacity := 0.4) %>% layer_points()
 ```
 
 ## Figures options
-* `dev = 'png'` : Sets the default graphical device. `tikz` has nicer font rendering for LaTeX 
+* `dev = 'png'` : Sets the default graphical device. `tikz` has nicer font rendering for LaTeX. Can interact with `ggobi`, `graphviz`, `rgl`, etc. 
 * `fig.width` and `fig.height` : Sets width and height of the device.
 * `fig.cap` and `fig.align` : Set a caption and alignment
 * Able to set encoding (for Icelandic characters) and dingbat font (reduces the size of pdfs).
-* Can group together device options `dev.args = list(option1 = "foo", option2 = "bar")`
+* Can send additional graphic device specific arguments via `dev.args = list(option1 = "foo", option2 = "bar")`
 
 ## `cache = TRUE`
 * Caching is  helpful if you have a large document or `R` takes a long time to evaluate certain chunks.
-* Caching compare the MD5 hash of a cached chunk with MD5 hash of the same cache when `knit()` is re-run
+* Caching compares the MD5 hash of a cached chunk with the MD5 hash of the same cache when `knit()` is re-run
 * Manually set cache dependencies (i.e Chunk B depends on A) or do this automatically (`autodep = TRUE`)
-* Adding new data won't update a cache. One way to enable this is `file.info()` function in the chunk. For example,
+* Adding _new data won't update a cache_. One way to enable this is `file.info()` function in the chunk. For example,
 ```{r,comment = NA, echo = FALSE}
 cat("```{r, foo_time = file.info('foo.csv')$mtime}\nfoo <- read.csv(\"foo\")\n...")
 
@@ -249,7 +258,7 @@ y
 
 ## Reusing whole chunks
 ```{r,comment = NA, echo = FALSE}
-cat("```{r, cau, include = FALSE, eval = FALSE}\ny <- rcauchy(1)\n```\n```{r, norm, include = FALSE, eval = FALSE}\ny\nx <- y + rnorm(1)\nx\n```\n```{r, C, ref.label = c('cau','norm')}\nz <- y\nz\n```")
+cat("```{r, cau, include = FALSE, eval = FALSE}\ny <- rcauchy(1)\n```\n```{r, norm, include = FALSE, eval = FALSE}\ny\nx <- y + rnorm(1)\nx\n```\n```{r, C, ref.label = c('cau','norm')\n```")
 ```
 
 ## And the output
@@ -272,7 +281,7 @@ cat("## @knitr nitrogen_conversion\ntons_mgN <- function(tons, unit){\nmgN <- (t
 ```
 
 ```{r,comment = NA, echo = FALSE}
-cat("read_chunk(\"ocean_conversions.R\")")
+cat("read_chunk(\"nitrogen_conversions.R\")")
 ```
 
 ```{r,comment = NA, echo = FALSE}
@@ -290,16 +299,22 @@ cat("```{r, nitrogen_conversion}\n```")
 
 ## Hooks
 * Hooks allow you to expand the capability of `knitr`. 
-* Chunk hooks can be called before (say you want to modify some graphical setting) or after the chunk (if you want to insert text into output like LaTeX or Markdown commands).
-* Power users will be definitely interested in this. 
+* Chunk hooks can be called before (say want to crop the margins of a graph via `par()` or after the chunk (if you want to insert commands into output like LaTeX or Markdown commands).
 * See [Yihui's hooks page](http://yihui.name/knitr/hooks) for more details. 
+
+## Packrat
+* [Packrat](http://cran.r-project.org/web/packages/packrat/) is an R package that helps you manage your project’s R package dependencies in an isolated, reproducible and portable way.
+* `init()`, initialize a new packrat project.
+* `snapshot()`, take a snapshot of the installed packages.
+* `bundle()`, bundles (tarball) a packrat project for sharing.
+* `unbundle()`, unbundles a packrat project.
+* This will modify `.Rprofile`! 
 
 
 ## Reproducing research
 * Reproducing research should be easier.
 * `knitr` makes creating dynamic reports very simple.
 * You should be able to share data and an `Rmd` or an `Rnw` file with a friend, colleague, or reviewer and they __should__ be able to replicate your findings.
-* [Packrat](http://cran.r-project.org/web/packages/packrat/) is an R package that helps you manage your project’s R package dependencies in an isolated, reproducible and portable way.
 
 ## Learning more
 * `knitr` has an excellent [website](http://yihui.name/knitr)
@@ -325,6 +340,7 @@ Thanks for coming
 </p>
 
 [https://lundinn.github.io/](https://lundinn.github.io/)
+
 
 
 
