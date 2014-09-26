@@ -46,7 +46,7 @@ Which one should you use, see [Yihue Xie's post](http://yihui.name/en/2013/10/ma
 The developers of Rstudio are often the first to integrate the latest and greatest from `R`. Else, [ESS](http://ess.r-project.org/) and [LyX](http://www.lyx.org/) are fully integrated with `knitr` or add a custom command to your favorite editor. 
 
 ## Knitting {.flexbox .vcenter}
-![knitting_girl](knitr_IRUG_26sept2014_files/knitting_girl.png)
+![knitting_girl](knitting_girl.png)
 
 ## Why `knitr`?
 

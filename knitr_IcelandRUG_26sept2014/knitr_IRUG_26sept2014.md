@@ -31,7 +31,7 @@ Which one should you use, see [Yihue Xie's post](http://yihui.name/en/2013/10/ma
 The developers of Rstudio are often the first to integrate the latest and greatest from `R`. Else, [ESS](http://ess.r-project.org/) and [LyX](http://www.lyx.org/) are fully integrated with `knitr` or add a custom command to your favorite editor. 
 
 ## Knitting {.flexbox .vcenter}
-![knitting_girl](knitr_IRUG_26sept2014_files/knitting_girl.png)
+![knitting_girl](knitting_girl.png)
 
 ## Why `knitr`?
 
@@ -124,7 +124,7 @@ opts_chunk$get("engine")
 \Sexpr{<insert R code for LaTeX>}
 ```
 
-* A realization of a $\chi_2^2$ is 2.99.
+* A realization of a $\chi_2^2$ is 1.72.
 
 ```
 A realization of a $\chi_2^2$ is `r rchisq(1, df = 2)`.
@@ -221,7 +221,7 @@ opts_chunk$set(fig.width=6, fig.align = 'center', echo = FALSE))
 ## Tables
 Tables are easily handled with `xtable`. Make sure to specify `results = "asis"` to render the table. 
 <!-- html table generated in R 3.1.1 by xtable 1.7-3 package -->
-<!-- Fri Sep 26 11:45:05 2014 -->
+<!-- Fri Sep 26 14:39:40 2014 -->
 <TABLE border=1>
 <TR> <TH>  </TH> <TH> Estimate </TH> <TH> Std. Error </TH> <TH> t value </TH> <TH> Pr(&gt;|t|) </TH>  </TR>
   <TR> <TD align="right"> (Intercept) </TD> <TD align="right"> -17.5791 </TD> <TD align="right"> 6.7584 </TD> <TD align="right"> -2.60 </TD> <TD align="right"> 0.0123 </TD> </TR>
@@ -259,27 +259,27 @@ speed              3.93      0.42         9.46       1.49\times 10^{-12}
 -------------------------------------------------------------
 
 ## Interactive figures (`ggvis`) {.flexbox .vcenter}
-<!--html_preserve--><div id="plot_id542307099-container" class="ggvis-output-container">
-<div id="plot_id542307099" class="ggvis-output"></div>
+<!--html_preserve--><div id="plot_id762484009-container" class="ggvis-output-container">
+<div id="plot_id762484009" class="ggvis-output"></div>
 <div class="plot-gear-icon">
 <nav class="ggvis-control">
 <a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
 <ul class="ggvis-dropdown">
 <li>
 Renderer: 
-<a id="plot_id542307099_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id542307099" data-renderer="svg">SVG</a>
+<a id="plot_id762484009_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id762484009" data-renderer="svg">SVG</a>
  | 
-<a id="plot_id542307099_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id542307099" data-renderer="canvas">Canvas</a>
+<a id="plot_id762484009_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id762484009" data-renderer="canvas">Canvas</a>
 </li>
 <li>
-<a id="plot_id542307099_download" class="ggvis-download" data-plot-id="plot_id542307099">Download</a>
+<a id="plot_id762484009_download" class="ggvis-download" data-plot-id="plot_id762484009">Download</a>
 </li>
 </ul>
 </nav>
 </div>
 </div>
 <script type="text/javascript">
-var plot_id542307099_spec = {
+var plot_id762484009_spec = {
 	"data" : [
 		{
 			"name" : "mtcars0",
@@ -405,7 +405,7 @@ var plot_id542307099_spec = {
 	},
 	"handlers" : null
 };
-ggvis.getPlot("plot_id542307099").parseSpec(plot_id542307099_spec);
+ggvis.getPlot("plot_id762484009").parseSpec(plot_id762484009_spec);
 </script><!--/html_preserve-->
 
 ## Figures options
@@ -453,7 +453,7 @@ y
 ```
 
 ```
-## [1] -3.3
+## [1] -0.074
 ```
 
 ```r
@@ -462,7 +462,7 @@ y
 ```
 
 ```
-## [1] -0.93
+## [1] 5.3
 ```
 
 ## Reusing whole chunks
@@ -490,7 +490,7 @@ y
 ```
 
 ```
-## [1] 0.66
+## [1] 5.7
 ```
 
 ```r
@@ -499,7 +499,7 @@ x
 ```
 
 ```
-## [1] 1.6
+## [1] 7.4
 ```
 
 ## External code
