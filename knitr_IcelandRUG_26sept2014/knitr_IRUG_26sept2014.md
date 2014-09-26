@@ -1,6 +1,6 @@
 # Creating reproducible research with `knitr`
 Christopher David Desjardins  
-26 September 2014  
+26 September 2014 @ R-Ísland UG  
 
 ## What is reproducible research?
 
@@ -124,7 +124,7 @@ opts_chunk$get("engine")
 \Sexpr{<insert R code for LaTeX>}
 ```
 
-* A realization of a $\chi_2^2$ is 1.48.
+* A realization of a $\chi_2^2$ is 2.99.
 
 ```
 A realization of a $\chi_2^2$ is `r rchisq(1, df = 2)`.
@@ -221,7 +221,7 @@ opts_chunk$set(fig.width=6, fig.align = 'center', echo = FALSE))
 ## Tables
 Tables are easily handled with `xtable`. Make sure to specify `results = "asis"` to render the table. 
 <!-- html table generated in R 3.1.1 by xtable 1.7-3 package -->
-<!-- Fri Sep 26 11:17:06 2014 -->
+<!-- Fri Sep 26 11:45:05 2014 -->
 <TABLE border=1>
 <TR> <TH>  </TH> <TH> Estimate </TH> <TH> Std. Error </TH> <TH> t value </TH> <TH> Pr(&gt;|t|) </TH>  </TR>
   <TR> <TD align="right"> (Intercept) </TD> <TD align="right"> -17.5791 </TD> <TD align="right"> 6.7584 </TD> <TD align="right"> -2.60 </TD> <TD align="right"> 0.0123 </TD> </TR>
@@ -259,27 +259,27 @@ speed              3.93      0.42         9.46       1.49\times 10^{-12}
 -------------------------------------------------------------
 
 ## Interactive figures (`ggvis`) {.flexbox .vcenter}
-<!--html_preserve--><div id="plot_id650177452-container" class="ggvis-output-container">
-<div id="plot_id650177452" class="ggvis-output"></div>
+<!--html_preserve--><div id="plot_id542307099-container" class="ggvis-output-container">
+<div id="plot_id542307099" class="ggvis-output"></div>
 <div class="plot-gear-icon">
 <nav class="ggvis-control">
 <a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
 <ul class="ggvis-dropdown">
 <li>
 Renderer: 
-<a id="plot_id650177452_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id650177452" data-renderer="svg">SVG</a>
+<a id="plot_id542307099_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id542307099" data-renderer="svg">SVG</a>
  | 
-<a id="plot_id650177452_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id650177452" data-renderer="canvas">Canvas</a>
+<a id="plot_id542307099_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id542307099" data-renderer="canvas">Canvas</a>
 </li>
 <li>
-<a id="plot_id650177452_download" class="ggvis-download" data-plot-id="plot_id650177452">Download</a>
+<a id="plot_id542307099_download" class="ggvis-download" data-plot-id="plot_id542307099">Download</a>
 </li>
 </ul>
 </nav>
 </div>
 </div>
 <script type="text/javascript">
-var plot_id650177452_spec = {
+var plot_id542307099_spec = {
 	"data" : [
 		{
 			"name" : "mtcars0",
@@ -405,7 +405,7 @@ var plot_id650177452_spec = {
 	},
 	"handlers" : null
 };
-ggvis.getPlot("plot_id650177452").parseSpec(plot_id650177452_spec);
+ggvis.getPlot("plot_id542307099").parseSpec(plot_id542307099_spec);
 </script><!--/html_preserve-->
 
 ## Figures options
@@ -453,7 +453,7 @@ y
 ```
 
 ```
-## [1] -0.15
+## [1] -3.3
 ```
 
 ```r
@@ -462,7 +462,7 @@ y
 ```
 
 ```
-## [1] 2.4
+## [1] -0.93
 ```
 
 ## Reusing whole chunks
@@ -490,7 +490,7 @@ y
 ```
 
 ```
-## [1] 1.4
+## [1] 0.66
 ```
 
 ```r
@@ -499,7 +499,7 @@ x
 ```
 
 ```
-## [1] -0.35
+## [1] 1.6
 ```
 
 ## External code
