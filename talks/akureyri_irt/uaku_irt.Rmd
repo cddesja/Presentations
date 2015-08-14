@@ -1,0 +1,281 @@
+---
+title: "IRT Workshop"
+author: Christopher David Desjardins
+date: 12 January 2015
+output: ioslides_presentation
+runtime: shiny
+---
+
+## Purpose of the workshop
+
+- To introduce the concept of IRT
+- To present the 1-PL/Rasch, 2-PL, and 3-PL models
+ 
+## What is item response theory?
+- __A measurement perspective__
+- What is __measurement__?
+- <font color = "blue">Assignment</font> of <font color = "blue">numerals</font> to <font color = "blue">objects</font> or events <font color = "blue">leading</font> to different <font color = "blue">scales</font> and kinds of measurements
+- The process by which we attempt to <font color = "blue">understand a variable</font>, which could be directly unobservable
+
+## Latent variables {.flexbox .vcenter}
+<img src="giphy.gif" height="269" width="480"> 
+
+## Measuring mathematical knowledge {.flexbox .vcenter}
+<img src="math.gif" height = "265" width = "480">
+
+## How Do We Measure Math? {.flexbox .vcenter}
+
+<img src="math-test.jpg" width = "95%" height = "95%">
+
+## What Do We Want in Our Instruments? {.build}
+<p style="text-align:center"><img src="weather.png" width = "60%" height = "60%"></p>
+
+<p style="text-align:center"><font color = "blue">Scores that are invariant to our instrument</font></p>
+
+## IRT
+- Models
+
+- Link manifest variables with latent variables
+
+- Latent characteristics of individuals and items are __predictors__ of observed responses
+
+- Not a "how" or "why" theory
+
+## Properties of IRT
+- Manifest variables differentiate among persons at different locations on the latent scale
+
+- Items are characterized by location and ability to discriminate among persons
+
+- Items and persons are on the same scale
+
+- Parameters estimated in a sample are linearly transformable to estimates of those parameters from another sample
+
+- Yields <font color = "red"> scores that are __independent__ of number of items, item difficulty, and the individuals it is measured on</font>, and are placed on a real-number scale
+
+## Assumptions of IRT {.build}
+<p style="text-align:center"><img src = "math_ability.png" width = "95%"></p>
+
+Response of a person to an item can be modeled with a specific __item reponse function__
+
+## Other traits
+- Test information function for designing a test
+- Methods for examining item and person misfit
+- Adaptive testing can be implemented (e.g. CAT)
+- IRT is a family of models for various response types and could be used with multidimensional data.
+
+## IRT conceptually
+<p style="text-align:center"><img src = "irt_graph.png" width = "65%"></p>
+
+## IRF conceptually
+<p style="text-align:center"><img src = "item1.png" width = "65%"></p>
+
+## Rasch model {.build}
+<strong>The logistic model</strong>
+<p style="text-align:center">$p(x = 1 | z) = \frac{e^z}{1 - e^z}$</p>
+
+<strong>The logistic regression model</strong>
+<p style="text-align:center">$p(x = 1 | g) = \frac{e^{\beta_0 + \beta_1g}}{1 - e^{\beta_0 + \beta_1g}}$</p>
+
+<strong>The Rasch model</strong>
+<p style="text-align:center">$p(x_j = 1 | \theta, b_j) = \frac{e^{\theta - b_j}}{1 - e^{\theta - b_j}}$</p>
+
+<font color = "blue">So, the Rasch model is _just_ the logistic regression model in disguise</font>
+
+## What does $\theta - b_j$ mean
+
+```{r}
+rasch <- function(person, item) {
+exp(person - item)/(1 + exp(person - item))
+}
+rasch(person = 1, item = 1.5)
+```
+
+```{r}
+rasch <- function(person, item) {
+exp(person - item)/(1 + exp(person - item))
+}
+rasch(person = 1, item = 1)
+```
+
+## Exploring the Rasch
+```{r, echo = FALSE}
+library("shiny")
+library("ggplot2")
+persons <- seq(-3, 3, by = .1)
+b <- -3:3
+data_r <- matrix(nrow = length(persons), ncol = length(b))
+for(i in 1:length(b)){
+  data_r[,i] <- rasch(persons, b[i])
+}
+data_r <- as.data.frame(data_r)
+colnames(data_r) <- b
+````
+
+```{r, echo=FALSE}
+inputPanel(
+  selectInput("idiff", label = "Item Difficulty",
+          choices = -3:3, selected = 0))
+renderPlot({
+  qplot(y = data_r[,input$idiff], x = persons, geom = "line") + ylab("Probability of Getting Item Correct") + xlab("Person Ability") + coord_cartesian(ylim = c(0, 1), xlim = c(-3, 3)) + geom_vline(xintercept = as.numeric(input$idiff), colour = "red", linetype = "longdash")
+})
+````
+
+## The 1-PL model {.build}
+<strong>The 1-PL model</strong>
+<p style="text-align:center">$p(x_j = 1 | a,\theta, b_j) = \frac{e^{a(\theta - b_j)}}{1 - e^{a(\theta - b_j)}}$</p>
+
+- _a_ is the item discrimination
+- What is _a_ in the Rasch?
+- Where is the subscript for _a_?
+
+## The 1-PL model in action
+```{r, echo = FALSE}
+rascha <- function(person, item, a) {
+  exp(a*(person - item))/(1 + exp(a*(person - item)))
+}
+
+persons <- seq(-3, 3, by = .1)
+b <- -3:3
+a <- -3:3
+
+data_full <- NULL
+for(i in 1:length(b)){
+  data <- matrix(nrow = length(persons), ncol = length(a))
+  for(j in 1:length(a)){
+    data[,j] <- rascha(persons, b[i], a[j])
+  }
+  data_full <- cbind(data_full,data)
+}
+x <- NULL
+for(i in 1:length(b)){
+  tmp <- paste(b[i], a, sep = "")
+  x <- append(x, tmp)
+}
+colnames(data_full) <- x
+````
+
+```{r, echo=FALSE}
+inputPanel(
+  selectInput("diff", label = "Item Difficulty",
+              choices = -3:3),
+  selectInput("disc", label = "Item Discrimination",
+              choices = -3:3))
+renderPlot({
+  qplot(y = data_full[,paste(input$diff, input$disc, sep = "")], x = persons, geom = "line") + ylab("Probability of Getting Item Correct") + xlab("Person Ability") + coord_cartesian(ylim = c(0, 1), xlim = c(-3, 3)) + geom_vline(xintercept = as.numeric(input$diff), colour = "red", linetype = "longdash")
+})
+```
+
+## Calculating ability estimates
+1. First, calculate the probability of each response for a respondent.
+2. Second, determine probability of the response pattern (just the product b/c of local independence)
+3. Repeat #1 and #2 for $\theta$ between -4 and 4
+4. Fourth, select the $\theta$ with the highest likelihood of producing the pattern, typicall the log-likelihood.
+
+## Doing it in `R`
+- Assume, that $b_1$ = 2, $b_2$ = 1.2, and $b_3$ = 2.5
+- What is the most likely pattern that would give raise to a 011?
+
+```{r, eval = FALSE}
+person <- seq(from= -4, to = 4, by = .1)
+item1 <- 2; item2 <- 1.2; item3 <- 2.5
+LogLiks <- NULL
+for(i in 1:length(person)){
+  p1 <- 1-rasch(person = person[i],item = item1)
+  p2 <- rasch(person = person[i],item = item2)
+  p3 <- rasch(person = person[i],item = item3)
+  LogLiks[i] <- log(p1*p2*p3)
+  }
+plot(LogLiks person,type = "l",xlab = "Ability",
+     ylab = "Log-Likelihood")
+abline(v = person[which.max(LogLiks)],lty=2)
+```
+
+## What it looks like
+```{r, echo = FALSE}
+person <- seq(from= -4, to = 4, by = .1)
+item1 <- 2; item2 <- 1.2; item3 <- 2.5
+LogLiks <- NULL
+for(i in 1:length(person)){
+  p1 <- 1-rasch(person = person[i],item = item1)
+  p2 <- rasch(person = person[i],item = item2)
+  p3 <- rasch(person = person[i],item = item3)
+  LogLiks[i] <- log(p1*p2*p3)
+  }
+plot(LogLiks ~ person,type = "l",xlab = "Ability", ylab = "Log-Likelihood")
+abline(v = person[which.max(LogLiks)],lty=2)
+```
+
+## This is just a point-estimate though ...
+- The standard error of estimate (SEE) represents our degree of uncertainty about the location of a person.
+- The larger the SEE, the more uncertain we are.
+- This is the same thing as a standard error in statistics and you could use it to create 95% confidence intervals around person and item parameters.
+
+## Information, lots of it!
+- Information is the inverse of the SEE
+- The smaller the SEE, the more precise we are about where a person is located
+- For the 1-PL, the information function is __unimodal__, __symmetric__, and __max information__ occurs at $b$ 
+- And we can sum these up!!!
+
+## Plotting information
+```{r, echo = FALSE, message=FALSE, warning=FALSE, fig.show='hold', fig.width=8}
+library("irtoys")
+p.1pl <- est(Scored, model="1PL", engine="ltm", rasch = TRUE) 
+op <- par(mfrow=c(1,2))
+plot(iif(p.1pl$est), co="red", label=TRUE)
+plot(trf(p.1pl$est))
+par(op)
+```
+
+## The 2-PL and the 3-PL {.build}
+<strong>The 2-PL model</strong>
+<p style="text-align:center">$p(x_j = 1 | \theta, a_j, b_j) = \frac{e^{a_j(\theta - b_j)}}{1 - e^{a_j(\theta - b_j)}}$</p>
+
+<strong>The 2-PL model</strong>
+<p style="text-align:center">$p(x_j = 1 | \theta, a_j, b_j, c_k) = c_j + (1 - c_j)\frac{e^{a_j(\theta - b_j)}}{1 - e^{a_j(\theta - b_j)}}$</p>
+
+- $c_j$ is the guessing parameter, or lower asympotate, and $a_j$, we've already seen
+- Our item location is now half between $c_j$ and the upper asympotate
+- $a_j$ gives us more information at $b_j$ when it's greater than 1
+
+## What does the 3-PL look like?
+```{r, echo = FALSE}
+threepl <- function(person, item, a, c) {
+  c + (1 - c)*exp(a*(person - item))/(1 + exp(a*(person - item)))
+}
+aj <- 1.5
+bj <- 0
+guess <- c(0,.25,.5)
+no <- threepl(persons, bj, aj, guess[1])
+p25 <- threepl(persons, bj, aj, guess[2])
+p50 <- threepl(persons, bj, aj, guess[3])
+qplot(y = no, x = persons, geom = "line") + geom_line(y = p25, color = "red") + geom_line(y = p50, color = "blue") + xlab("Person Ability") + ylab("Probability of Getting Item Correct")
+```
+
+## Which one to choose?
+- Sample size considerations, Rasch estimates less parameters
+- Does guessing make sense?
+- Can test empirically in `R`
+
+## One problem with these models {.build}
+<strong>Recall</strong>
+<p style="text-align:center">$p(x_j = 1 | \theta, b_j) = \frac{e^{\theta - b_j}}{1 - e^{\theta - b_j}}$</p>
+
+- But we don't know $\theta$ or $b_j$
+
+<strong>So there are an infinite number of solutions!</strong>
+
+## IRT models in `R` with `irtoys`
+```{r}
+p.2pl <- est(Scored, model="2PL", engine="ltm")
+cbind(p.2pl$est[1:2,],p.2pl$se[1:2,])
+th.eap <- eap(resp=Scored, ip=Scored2pl$est, qu=normal.qu())
+th.eap[1:2,]
+```
+
+## Other models
+- If your response data are polytomous, there are polytomous IRT models. 
+- Basically generalizations of the Rasch and 2-PL to these settings.
+- Multidimensional data, no problem. Fit a MIRT model, bifactor model, etc, with `mirt`. 
+
+##  {.flexbox .vcenter}
+<img src="takk.gif" height = "321" width = "480">
